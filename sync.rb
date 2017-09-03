@@ -4,22 +4,33 @@ require 'yaml'
 require 'net/ftp'
 require 'pp'
 
-cfg_raw = File.read(File.join(ENV["HOME"], ".mptm.cfg"))
-cfg = YAML.load(cfg_raw)
+def main
+  debug_mode = false
+  ARGV.each do |a|
+    if a =~ /^-d/
+      debug_mode = true
+    end
+  end
 
-puts "starting"
-ftp = Net::FTP.new
-ftp.passive = true
-#ftp.debug_mode = 1
-ftp.connect(cfg["host"])
-ftp.login(cfg["user"], cfg["pass"])
+  cfg_raw = File.read(File.join(ENV["HOME"], ".mptm.cfg"))
+  cfg = YAML.load(cfg_raw)
 
-ftp.chdir(cfg["dir"])
+  puts "starting"
+  ftp = Net::FTP.new
+  ftp.passive = true
+  ftp.debug_mode = debug_mode
+  ftp.connect(cfg["host"])
+  ftp.login(cfg["user"], cfg["pass"])
 
-f_excl = [ ] # "sync.rb" ]
-f_incl = Dir['*']
-f_sync = f_incl - f_excl
+  ftp.chdir(cfg["dir"])
 
-f_sync.each do |f|
-  ftp.putbinaryfile(f, "/public_html/#{f}")
+  f_excl = [ ] # "sync.rb" ]
+  f_incl = Dir['*']
+  f_sync = f_incl - f_excl
+
+  f_sync.each do |f|
+    ftp.putbinaryfile(f, "/public_html/#{f}")
+  end
 end
+
+main
