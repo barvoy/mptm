@@ -59,7 +59,7 @@
 		$csv_paths = array_filter(scandir(realpath(dirname(__FILE__))), function($v, $k) {
 		  return preg_match('/.*csv$/', $v) == 1;
 		}, ARRAY_FILTER_USE_BOTH);
-		$csv_path = $csv_paths[0];
+		$csv_path = $csv_paths[8];
 
 		print_r($csv_paths);
 		print "trying to open $csv_path";
