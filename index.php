@@ -59,10 +59,9 @@
 		$csv_paths = array_filter(scandir(realpath(dirname(__FILE__))), function($v, $k) {
 		  return preg_match('/.*csv$/', $v) == 1;
 		}, ARRAY_FILTER_USE_BOTH);
-		$csv_path = $csv_paths[8];
-
-		print_r($csv_paths);
-		print "trying to open $csv_path";
+		sort($csv_paths);
+		$csv_path = $csv_paths[0];
+		//print "trying to open $csv_path";
 		$fp = fopen($csv_path, "r");
 		if (!$fp) {
 			print_r("error");
@@ -71,7 +70,7 @@
 		while (($data = fgetcsv($fp)) !== FALSE) {
 			//print_r($data);
 			$person_name = $data[1];
-			print "<option value=\"$person_name\">";
+			print "\t\t<option value=\"$person_name\">\n";
 		}
 	?>
 	</datalist>
