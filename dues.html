@@ -1,0 +1,113 @@
+<h1>Join Menlo Park Toastmasters!</h1>
+<p>
+To join us, you need to:
+
+<ol>
+<li>Pay a membership fee (below)
+<li>Fill <a target="_blank" href="mptm_new_member.pdf">the new member form</a> and send the signed copy to <a href="mailto:treasurer@menloparktm.org">treasurer@menlopark.org</a>
+<li>Join <a target="_blank" href="https://groups.google.com/forum/#!forum/mptm/join">our club's mailing list</a>. This is where we send speech details and our schedule</li>
+</ol>
+
+</p>
+
+<hr />
+
+<h2>Pay for the membership</h2>
+
+<p>
+<b>Are you a new member?</b>
+<br />
+<form id="mptm_new_member">
+  <input type="radio" class="mptm_new_member_dues" name="mptm_new_member" value="1" checked="true">yes ($20)<br/>
+  <input type="radio" class="mptm_new_member_dues" name="mptm_new_member" value="0">no (renewal/reinstating: $0)<br/>
+</form>
+</p>
+
+<p>
+<b>Month you'd like to start your membership</b><br />
+<small>
+  (pro-rated $10/mo: $7.50 to Toastmasters International 503c non-profit and $2.5/mo for running our club):
+</small>
+<form id="mptm_dues">
+  <input type="radio" class="mptm_months" name="mptm_months" value="3">January<br/>
+  <input type="radio" class="mptm_months" name="mptm_months" value="2">February<br/>
+  <input type="radio" class="mptm_months" name="mptm_months" value="1">March<br/>
+  <input type="radio" class="mptm_months" name="mptm_months" value="6">April<br/>
+  <input type="radio" class="mptm_months" name="mptm_months" value="5">May<br/>
+  <input type="radio" class="mptm_months" name="mptm_months" value="4">June<br/>
+  <input type="radio" class="mptm_months" name="mptm_months" value="3">July<br/>
+  <input type="radio" class="mptm_months" name="mptm_months" value="2">August<br/>
+  <input type="radio" class="mptm_months" name="mptm_months" value="1">September<br/>
+  <input type="radio" class="mptm_months" name="mptm_months" value="6">October<br/>
+  <input type="radio" class="mptm_months" name="mptm_months" value="5">November<br/>
+  <input type="radio" class="mptm_months" name="mptm_months" value="4">December<br/>
+</form>
+</p>
+
+<p>
+<b>CA sales tax</b><br />
+  <input type="radio" class="mptm_ca_tax" name="bleh" value="4" checked>$1.55<br/>
+</p>
+
+<p>
+<b>Menlo Park Toastmasters 503(c) membership fee:</b>
+<br />
+<br />
+<a id="pay_link" href=""></a>
+</p>
+
+<script>
+function mptm_calc_dues(should_update_month) {
+	const ca_sales_tax = 1.55;
+	const mptm_monthly_fee = 2.5;
+	const tmi_monthly_fee = 7.50;
+	const new_member_fee = 20;
+
+	const cur_date = new Date();
+	const cur_month_day = cur_date.getDate();
+	const month_maybe_inc = (cur_month_day > 14) ? 1 : 0;
+	const toggle_month = (cur_date.getMonth() + month_maybe_inc) % 12;
+
+	let mptm_months_el = document.getElementsByClassName('mptm_months');
+	let mptm_new_member_dues = document.getElementsByClassName('mptm_new_member_dues');
+
+	console.assert(mptm_months_el.length == 12, "internal error: we don't have 12 months");
+	console.assert(toggle_month >= 0 && toggle_month <= 11, "we have a wrong month!");
+	if (should_update_month) {
+		mptm_months_el[toggle_month].checked = 'true';
+	}
+
+	let how_many_months = null;
+	for (let mptm_month_el of mptm_months_el) {
+		if (mptm_month_el.checked) {
+			how_many_months = parseInt(mptm_month_el.value);
+		}
+	}
+	let is_new_member = null;
+	for (let mptm_member_dues of mptm_new_member_dues) {
+		if (mptm_member_dues.checked) {
+			is_new_member = parseInt(mptm_member_dues.value);
+		}
+	}
+	console.assert(how_many_months != null, "ops1");
+	console.assert(is_new_member != null, "ops2");
+
+	let to_pay = (mptm_monthly_fee + tmi_monthly_fee)*how_many_months
+			+ (new_member_fee*is_new_member)
+			+ ca_sales_tax;
+
+	let pay_link_el = document.getElementById('pay_link');
+	pay_link_el.innerHTML = "Click HERE to pay $" + to_pay;
+	pay_link_el.href = "https://paypal.me/mptm/" + to_pay;
+
+	//console.log(how_many_months, is_new_member);
+}
+
+document.getElementById('mptm_dues').addEventListener('click', function() { mptm_calc_dues(false); });
+document.getElementById('mptm_new_member').addEventListener('click', function() { mptm_calc_dues(false); });
+
+mptm_calc_dues(true);	// call it once to update a "checked" mark near the current month
+
+</script>
+
+<!-- (c) 2018 W. Adam Koszek <wojciech@koszek.com> -->
