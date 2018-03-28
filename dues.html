@@ -15,6 +15,8 @@ To join us, you need to:
 
 <h2>Pay for the membership</h2>
 
+<fieldset width="80%">
+<legend>Membership options:</legend>
 <p>
 <b>Are you a new member?</b>
 <br />
@@ -49,12 +51,25 @@ To join us, you need to:
 <b>CA sales tax</b><br />
   <input type="radio" class="mptm_ca_tax" name="bleh" value="4" checked>$1.55<br/>
 </p>
+</fieldset>
+
 
 <p>
-<b>Menlo Park Toastmasters 503(c) membership fee:</b>
-<br />
-<br />
+<b>Summary:</b><br/>
+<ul>
+<li><span id="pay_expl_link"></span>
+</ul>
+</p>
+
+<p>
+<h3 id="mptm_total_pay">Total: </h3>
+</p>
+
+<p>
 <a id="pay_link" href=""></a>
+<br/>
+<br/>
+<i>NOTE: You'll be redirected to PayPal website. Debit/credit cards are accepted. PayPal is fine too.</i>
 </p>
 
 <script>
@@ -78,11 +93,16 @@ function mptm_calc_dues(should_update_month) {
 		mptm_months_el[toggle_month].checked = 'true';
 	}
 
+	let which_month_to_start = null;
 	let how_many_months = null;
+	let wi = 0;
 	for (let mptm_month_el of mptm_months_el) {
 		if (mptm_month_el.checked) {
 			how_many_months = parseInt(mptm_month_el.value);
+			which_month_to_start = wi;
+			break;
 		}
+		wi += 1;
 	}
 	let is_new_member = null;
 	for (let mptm_member_dues of mptm_new_member_dues) {
@@ -92,14 +112,31 @@ function mptm_calc_dues(should_update_month) {
 	}
 	console.assert(how_many_months != null, "ops1");
 	console.assert(is_new_member != null, "ops2");
+	console.assert(which_month_to_start != null, "ops3");
 
 	let to_pay = (mptm_monthly_fee + tmi_monthly_fee)*how_many_months
 			+ (new_member_fee*is_new_member)
 			+ ca_sales_tax;
 
+
+
+	let mptm_total_pay_el = document.getElementById('mptm_total_pay');
+	mptm_total_pay_el.innerHTML = "Total: $" + to_pay;
+
 	let pay_link_el = document.getElementById('pay_link');
 	pay_link_el.innerHTML = "Click HERE to pay $" + to_pay;
 	pay_link_el.href = "https://paypal.me/mptm/" + to_pay;
+
+	let tmpDate = new Date(cur_date.getFullYear(), which_month_to_start, 1);
+	let start_month_name = tmpDate.toLocaleString("en-us", { month: "long" });
+
+	let pay_expl_link_el = document.getElementById('pay_expl_link');
+	pay_expl_link_el.innerHTML = how_many_months
+		+ "-month membership in Menlo Park Toastmasters, starting "
+		+ start_month_name + ", 1st ($" + (mptm_monthly_fee + tmi_monthly_fee) + "/month)<br/>"
+		+ (is_new_member ? ("<li>New member initiation fee of $" + new_member_fee) : "")
+		+ "<li>CA sales tax: $" + (ca_sales_tax)
+		;
 
 	//console.log(how_many_months, is_new_member);
 }
