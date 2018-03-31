@@ -1,19 +1,15 @@
 <h1>Join Menlo Park Toastmasters!</h1>
 <p>
-To join us, you need to:
+Join our club in 4 easy steps:
 
 <ol>
 <li>Pay a membership fee (below)
-<li>Fill <a target="_blank" href="mptm_new_member.pdf">the new member form</a> and send the signed copy to our Treasurer: <a href="mailto:treasurer@menloparktm.org">treasurer@menlopark.org</a>
-<li>Join <a target="_blank" href="https://groups.google.com/forum/#!forum/mptm/join">our club's mailing list</a>. This is where we send speech details and our schedule</li>
-<li>Request a name tag with your name from our Sergeant of Arms: <a href="mailto:saa@menloparktm.org?subject=MPTM TAG request: PUT_YOUR_FIRST_AND_LASTNAME_HERE">saa@menloparktm.org</a>
+<li>Complete and sign <a target="_blank" href="mptm_new_member.pdf">the new member form</a> and send copy to our Treasurer: <a href="mailto:treasurer@menloparktm.org">treasurer@menloparktm.org</a>
+<li>Join <a target="_blank" href="https://groups.google.com/forum/#!forum/mptm/join">our club's mailing list</a>. This is how we send speech details and our schedule.</li>
+<li>Request a name tag from our Sergeant at Arms: <a href="mailto:saa@menloparktm.org?subject=MPTM TAG request: PUT_YOUR_FIRST_AND_LASTNAME_HERE">saa@menloparktm.org</a>
 </ol>
 
 </p>
-
-<hr />
-
-<h2>Pay for the membership</h2>
 
 <fieldset width="80%">
 <legend>Membership options:</legend>
@@ -29,7 +25,7 @@ To join us, you need to:
 <p>
 <b>Month you'd like to start your membership</b><br />
 <small>
-  (pro-rated $10/mo: $7.50 to Toastmasters International 503c non-profit and $2.5/mo for running our club):
+  (pro-rated $10/month: $7.50/month to Toastmasters International 503c non-profit and $2.50/month for running our club):
 </small>
 <form id="mptm_dues">
   <input type="radio" class="mptm_months" name="mptm_months" value="3">January<br/>
@@ -69,13 +65,13 @@ To join us, you need to:
 <a id="pay_link" href=""></a>
 <br/>
 <br/>
-<i>NOTE: You'll be redirected to PayPal website. Debit/credit cards are accepted. PayPal is fine too.</i>
+<i>NOTE: You'll be redirected to the PayPal website. Credit/debit cards and PayPal are accepted.</i>
 </p>
 
 <script>
 function mptm_calc_dues(should_update_month) {
 	const ca_sales_tax = 1.55;
-	const mptm_monthly_fee = 2.5;
+	const mptm_monthly_fee = 2.50;
 	const tmi_monthly_fee = 7.50;
 	const new_member_fee = 20;
 
@@ -133,8 +129,10 @@ function mptm_calc_dues(should_update_month) {
 	let pay_expl_link_el = document.getElementById('pay_expl_link');
 	pay_expl_link_el.innerHTML = how_many_months
 		+ "-month membership in Menlo Park Toastmasters, starting "
-		+ start_month_name + ", 1st ($" + (mptm_monthly_fee + tmi_monthly_fee) + "/month)<br/>"
-		+ (is_new_member ? ("<li>New member initiation fee of $" + new_member_fee) : "")
+		+ start_month_name
+		+ " 1 ($" + (mptm_monthly_fee + tmi_monthly_fee)
+		+ "/month): $" + ((mptm_monthly_fee+tmi_monthly_fee)*how_many_months)+ "<br/>"
+		+ (is_new_member ? ("<li>New member initiation fee: $" + new_member_fee) : "")
 		+ "<li>CA sales tax: $" + (ca_sales_tax)
 		;
 
