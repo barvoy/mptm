@@ -139,8 +139,19 @@ function mptm_calc_dues(should_update_month) {
 	//console.log(how_many_months, is_new_member);
 }
 
-document.getElementById('mptm_dues').addEventListener('click', function() { mptm_calc_dues(false); });
-document.getElementById('mptm_new_member').addEventListener('click', function() { mptm_calc_dues(false); });
+let r1_el = document.getElementsByClassName('mptm_new_member_dues');
+let r2_el = document.getElementsByClassName('mptm_months');
+
+for (r_el of r1_el) {
+	r_el.addEventListener('click', function() {
+		mptm_calc_dues(false);
+	});
+}
+for (r_el of r2_el) {
+	r_el.addEventListener('click', function() {
+		mptm_calc_dues(false);
+	});
+}
 
 mptm_calc_dues(true);	// call it once to update a "checked" mark near the current month
 
