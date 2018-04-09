@@ -43,4 +43,17 @@ function make_out_fn() {
 	return "newmem." . make_random_fn();
 }
 
+function state_init() {
+	session_start();
+}
+
+function state_trans_from_to($from, $to) {
+	if ($from != null) {
+		if ($_SESSION['state'] != $from) {
+			header("Location: /error.html");
+		}
+	}
+	$_SESSION['state'] = $to;
+}
+
 ?>

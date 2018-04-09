@@ -1,3 +1,9 @@
+<?php
+include_once('lib.php');
+	state_init();
+	state_trans_from_to("index", "form");
+?>
+
 <style>
 body { font-family: sans-serif; }
 input.submit { background-color: lightyellow ; width: 10%; font-size: 100%; }
