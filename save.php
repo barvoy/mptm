@@ -11,6 +11,10 @@ function make_random_fn() {
 	return sha1($random_str);
 }
 
+function make_out_fn() {
+	return "newmem." . make_random_fn();
+}
+
 foreach ($_POST as $key => $value) {
 	print $key . " = " . $value;	
 }
@@ -22,18 +26,16 @@ $sub_data = array(
 	,
 	"server" => $_SERVER
 	,
-//	"env" => $_ENV
-//	,
 	"cookie" => $_COOKIE
 	,
 	"request" => $_REQUEST
 );
 
 $j_str = json_encode($sub_data, JSON_PRETTY_PRINT);
-
-$fp = fopen('data.txt', 'w');
+$fp = fopen(make_out_fn(), 'w');
 fwrite($fp, $j_str);
 fclose($fp);
 
 ?>
+
 </pre>

@@ -149,17 +149,17 @@ legend { yellow; border: dotted 1px lightgray ;}
 		<h3>Transferring: provide details here</h3>
 		Previous club name:
 		<span class="req">*</span>
-		<input type="text" value="trans_prev_club_name" placeholder="Previous club name" />
+		<input type="text" name="trans_prev_club_name" placeholder="Previous club name" />
 		<br />
 
 		Previous club number:
 		<span class="req">*</span>
-		<input type="text" value="trans_prev_club_num" placeholder="Previous club number" />
+		<input type="text" name="trans_prev_club_num" placeholder="Previous club number" />
 		<br />
 
 		Member number:
 		<span class="req">*</span>
-		<input type="text" value="trans_memb_number" placeholder="Member number" />
+		<input type="text" name="trans_memb_number" placeholder="Member number" />
 		<br />
 	</span>
 </fieldset>
@@ -230,8 +230,10 @@ legend { yellow; border: dotted 1px lightgray ;}
 let mem_type_trans_data_el = document.getElementById('membership_type_transfer_data');
 let memb_types_el = document.getElementsByClassName('membership_type');
 for (memb_type_el of memb_types_el) {
+	console.log(memb_type_el);
 	memb_type_el.addEventListener('change', function (evt) {
-		if (evt.srcElement.value == 't') {
+		console.log(evt);
+		if (evt.srcElement.value == 'transfer') {
 			//evt.srcElement.hidden = !evt.srcElement.hidden;
 			mem_type_trans_data_el.hidden = !mem_type_trans_data_el.hidden;
 		} else {
