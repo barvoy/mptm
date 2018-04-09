@@ -2,22 +2,7 @@
 
 <?php
 
-function make_random_fn() {
-	$random_str = "";
-	for ($i = 0; $i < 4; $i++) {
-		$ri = random_int (0x0, 0xffffffff);
-		$random_str .= "x" . $ri;
-	}
-	return sha1($random_str);
-}
-
-function make_out_fn() {
-	return "newmem." . make_random_fn();
-}
-
-foreach ($_POST as $key => $value) {
-	print $key . " = " . $value;	
-}
+include_once('lib.php');
 
 $sub_data = array(
 	"post" => $_POST
