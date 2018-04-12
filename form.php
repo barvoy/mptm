@@ -1,7 +1,7 @@
 <?php
 include_once('lib.php');
 	state_init();
-	state_trans_from_to("index", "form");
+	state_trans_from_to("init", "form");
 ?>
 
 <style>
