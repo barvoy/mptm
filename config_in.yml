@@ -16,6 +16,5 @@ tm:
         renew_onetime:   0.00
         club_monthly:    2.50
         tmi_monthly:     7.50
-        # percents
-        ca_tax_rate_mul:   0.0725
-        paypay_rate_mul:   0.0290
+        ca_tax_rate_mul: 0.0725
+        paypay_rate_mul: 0.0290
