@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_STRICT);
+
 
 function out_dir_name() {
 	$here = getcwd();

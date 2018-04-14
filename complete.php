@@ -1,4 +1,6 @@
 <?
+error_reporting(E_STRICT);
+
 
 include_once('lib.php');
 state_init();
