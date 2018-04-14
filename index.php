@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_STRICT);
+
 include_once('lib.php');
 
 $ret = pre_check_all();
