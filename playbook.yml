@@ -1,0 +1,77 @@
+---
+- hosts: all
+  remote_user: vagrant
+  tasks:
+
+  - name: Update the APT cache
+    apt: update_cache=yes
+
+  - name: Install required packages
+    apt: name={{item}}
+    with_items:
+    - htop
+    - nginx
+    - php
+    - php-fpm
+    - php-pgsql
+    - ncdu
+
+  - name: Download foo.conf
+    get_url:
+     url: https://raw.githubusercontent.com/Neilpang/acme.sh/master/acme.sh
+     dest: /root/acme.sh
+     mode: 0755
+
+  - name: run acme.sh
+    shell: env INSTALLONLINE=1 /root/acme.sh
+
+  - name: make a temporary www directory
+    file: path=/root/tmp_www state=directory mode=0755
+
+  - service:
+      name: nginx
+      state: stopped
+
+#  - name: get domain
+#    shell: /root/acme.sh --issue --force --standalone -d mptm.barvoy.com -w /root/tmp_www
+
+  - name: Disable default nginx entry
+    file: path=/etc/nginx/sites-enabled/default state=absent
+
+  - name: set foo
+    set_fact: domain="mptm.barvoy.com"
+
+  - template:
+      src: "{{ item.from }}"
+      dest: "/etc/nginx/{{ item.domain }}"
+      owner: root
+      mode: 0644
+    with_items:
+      - { from: "nginx_domain", domain: "sites-available/mptm.barvoy.com" }
+      - { from: "nginx_ssl",    domain: "snippets/ssl.conf" }
+
+  - name: example copying file with owner and permissions
+    copy:
+      src: "{{ item.from }}"
+      dest: "{{ item.dest_dir }}/{{ item.from }}"
+      owner: root
+      group: root
+      mode: 0600
+    with_items:
+      - { from: "gzip.conf", dest_dir: "/etc/nginx/snippets" }
+
+  - name: Link the config file
+    file:
+      src:  "/etc/nginx/sites-available/{{ domain }}"
+      dest: "/etc/nginx/sites-enabled/{{ domain }}"
+      state: link
+
+#  - template:
+#      src: templates/etc/nginx/.htpasswd
+#      dest: /etc/nginx/.htpasswd
+#      owner: www-data
+#      group: root
+#      mode: 0600
+#
+  - name: restart nginx
+    service: name=nginx state=restarted enabled=yes

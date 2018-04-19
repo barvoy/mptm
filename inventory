@@ -1,0 +1,2 @@
+# Sample inventory file from:
+mptm ansible_ssh_host=mptm.barvoy.com ansible_ssh_port=22 ansible_ssh_user=root
