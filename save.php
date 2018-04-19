@@ -20,7 +20,7 @@ $sub_data = array(
 
 $j_str = json_encode($sub_data, JSON_PRETTY_PRINT);
 $fn_out = make_out_fn();
-$fp = fopen($fn_out, 'w');
+$fp = fopen(out_dir_name() . "/" . $fn_out, 'w');
 fwrite($fp, $j_str);
 fclose($fp);
 

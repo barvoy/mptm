@@ -1,0 +1,20 @@
+# Copyright (c) 2018 W. Adam Koszek <wkoszek@barvoy.com>
+# This is an input file. We read it with run_this_when_cfg_changed.rb script
+# and spit out the config.json
+tm:
+  comment: >
+    We put a proper comment in here later, when the file
+    gets regenerated. The point here is that we want the
+    comment to be in the config.json too.
+  clubs:
+    #-----------------------------------------------------------------------
+    - alias: mptm
+      name: Menlo Park Toastmasters
+      num: 1372
+      fees:
+        init_onetime:   20.00
+        renew_onetime:   0.00
+        club_monthly:    2.50
+        tmi_monthly:     7.50
+        ca_tax_rate_mul: 0.0725
+        paypay_rate_mul: 0.0290
