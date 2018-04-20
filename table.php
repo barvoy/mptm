@@ -1,12 +1,16 @@
 <?php
 
+// @todo: enable warnings everywhere
+
 function load_json_file($fn) {
 	$fp = fopen($fn, 'r');
+	assert($fp != FALSE);
 	$fsz = fstat($fp)['size'];
 	$data_read = fread($fp, $fsz);
 	fclose($fp);
 	assert(strlen($data_read) == $fsz);
 	$ret_str = json_decode($data_read);
+	assert($ret_str != NULL);
 	return $ret_str;
 }
 
@@ -40,6 +44,7 @@ function row_add($num, $name, $val) {
 }
 
 function tm_str_usb_amt($val) {
+	// @todo: assert float
 	return sprintf("$%2.2f", $val);
 }
 
@@ -48,16 +53,20 @@ function tm_str_new_mem_ini_fee() {
 }
 
 function tm_str_monthly($how_many_months, $how_much_per_month) {
+	// @todo: assert ints
 	return "Toastmasters International: $how_many_months * " . tm_str_usb_amt($how_much_per_month);
 }
 
 function tm_str_ca_tax($rate) {
+	// @todo: assert int
 	$pc_rate = $rate * 100;
 	$pc_rate .= "%";
 	return "CA Tax of $pc_rate";
 }
 
 function tm_str_paypal($rate) {
+	// @todo: assert float
+	// @todo: find a library for secure type conversion in PHP or check if types are strictly enforced in PHP7
 	$pc_rate = $rate * 100;
 	$pc_rate .= "%";
 	return "PayPal payment processing rate of $pc_rate";
@@ -68,6 +77,9 @@ function tm_str_total() {
 }
 
 function make_order_items_array($cfg, $order) {
+	assert($cfg != NULL);
+	assert($order != NULL);
+
 	$order_memb_type = $order->{'post'}->{'membership_type'};
 	$order_memb_start_mo = $order->{'post'}->{'tm_start_month'};
 	$club_cfg = $cfg->{'tm'}->{'clubs'}[0];
