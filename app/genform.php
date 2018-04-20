@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 error_reporting(-1);
 
 // Include the main TCPDF library (search for installation path).

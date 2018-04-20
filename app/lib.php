@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
 error_reporting(-1);
 
-
-function out_dir_name() {
+function out_dir_name() : string {
 	$here = getcwd();
 	$base = "newmem";
 
@@ -11,14 +11,14 @@ function out_dir_name() {
 	return $dn;
 }
 
-function has_enough_disk_space() {
+function has_enough_disk_space() : bool {
 	$dn = out_dir_name();
 	$mb = 1024.0*1024.0;
 	$fsz_mb = disk_free_space($dn) / $mb;
 	return ($fsz_mb > 1.0);
 }
 
-function pre_check_all() {
+function pre_check_all() : array {
 	$dn = out_dir_name();
 	if (!file_exists($dn) || !is_dir($dn)) {
 		return[-__LINE__, "The server isn't properly setup to accept your application"];
@@ -32,7 +32,7 @@ function pre_check_all() {
 	return [0, "ok"];
 }
 
-function make_random_fn() {
+function make_random_fn() : string {
 	$random_str = "";
 	for ($i = 0; $i < 4; $i++) {
 		$ri = random_int (0x0, 0xffffffff);
@@ -41,15 +41,16 @@ function make_random_fn() {
 	return sha1($random_str);
 }
 
-function make_out_fn() {
+function make_out_fn() : string {
 	return "newmem." . make_random_fn();
 }
 
 function state_init() {
-	session_start();
+	$rc = session_start();
+	assert($rc == TRUE);
 }
 
-function state_trans_from_to($from, $to) {
+function state_trans_from_to(string $from = null, string $to) {
 	if ($from != null) {
 		if ($_SESSION['state'] != $from) {
 			header("Location: /error.html");
@@ -61,17 +62,39 @@ function state_trans_from_to($from, $to) {
 
 // @todo: enable warnings everywhere
 
-function load_json_file($fn) {
+function load_json_file(string $fn) {
 	$fp = fopen($fn, 'r');
 	assert($fp != FALSE);
+
 	$fsz = fstat($fp)['size'];
+	assert($fsz >= 0);
+
 	$data_read = fread($fp, $fsz);
-	fclose($fp);
 	assert(strlen($data_read) == $fsz);
-	$ret_str = json_decode($data_read);
-	assert($ret_str != NULL);
-	return $ret_str;
+
+	$rc = fclose($fp);
+	assert($rc != FALSE);
+
+	$ret_obj = json_decode($data_read);
+	assert($ret_obj != NULL);
+
+	return $ret_obj;
 }
+
+function json_file_save($obj, $fn_out) {
+	$j_str = json_encode($obj, JSON_PRETTY_PRINT);
+	assert($j_str != FALSE);
+
+	$fp = fopen($fn_out, 'w');
+	assert($fp != FALSE);
+
+	$rc = fwrite($fp, $j_str);
+	assert($rc != FALSE);
+
+	$rc = fclose($fp);
+	assert($rc != FALSE);
+}
+
 
 function get_config() {
 	return load_json_file("config.json");
@@ -81,7 +104,7 @@ function get_order() {
 	return load_json_file('data.txt');
 }
 
-function make_hdr($num, $name, $val) {
+function make_hdr(string $num, string $name, float $val) : string {
 	$ostr = "";
 	$ostr .= "  <tr bgcolor=\"lightgray\">\n";
 	$ostr .= "    <th width=\"5%\">$num</th>\n";
@@ -91,7 +114,7 @@ function make_hdr($num, $name, $val) {
 	return $ostr;
 }
 
-function row_add($num, $name, $val) {
+function row_add(int $num, string $name, float $val) : string {
 	$val_padded = sprintf("%2.2f", $val);
 	$ostr = "";
 	$ostr .= "  <tr>\n";
@@ -102,36 +125,42 @@ function row_add($num, $name, $val) {
 	return $ostr;
 }
 
-function tm_str_usb_amt($val) {
+// @todo: usb -> usd
+function tm_str_usb_amt(float $val) : string {
 	// @todo: assert float
 	return sprintf("$%2.2f", $val);
 }
 
-function tm_str_new_mem_ini_fee() {
+function tm_str_new_mem_ini_fee() : string {
 	return "Toastmasters International: new member processing fee";
 }
 
-function tm_str_monthly($how_many_months, $how_much_per_month) {
+function tm_str_monthly(int $how_many_months, float $how_much_per_month) : string {
+	assert($how_many_months >= 1 && $how_many_months <= 12);
 	// @todo: assert ints
 	return "Toastmasters International: $how_many_months * " . tm_str_usb_amt($how_much_per_month);
 }
 
-function tm_str_ca_tax($rate) {
-	// @todo: assert int
+function assert_rate(float $rate) {
+	assert($rate >= 0.00 && $rate <= 1.00);
+}
+
+function tm_str_ca_tax(float $rate) : string {
+	assert_rate($rate);
 	$pc_rate = $rate * 100;
 	$pc_rate .= "%";
 	return "CA Tax of $pc_rate";
 }
 
-function tm_str_paypal($rate) {
-	// @todo: assert float
+function tm_str_paypal(float $rate) : string {
+	assert_rate($rate);
 	// @todo: find a library for secure type conversion in PHP or check if types are strictly enforced in PHP7
 	$pc_rate = $rate * 100;
 	$pc_rate .= "%";
 	return "PayPal payment processing rate of $pc_rate";
 }
 
-function tm_str_total() {
+function tm_str_total() : string {
 	return "Total";
 }
 
@@ -199,7 +228,7 @@ function make_order_items_array($cfg, $order) {
 	return $item_all;
 }
 
-function make_full_table() {
+function make_full_table() : string {
 	$cfg = get_config();
 	$order = get_order();
 	$order_items = make_order_items_array($cfg, $order);

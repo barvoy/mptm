@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 error_reporting(-1);
 
 include_once('lib.php');
@@ -143,18 +144,18 @@ include_once('lib.php');
 			<small>
 			(pro-rated $10/month: $7.50/month to Toastmasters International 503c non-profit and $2.50/month for running our club):
 			</small>
-			<input type="radio" class="mptm_months" name="mptm_months" value="3">January<br/>
-			<input type="radio" class="mptm_months" name="mptm_months" value="2">February<br/>
-			<input type="radio" class="mptm_months" name="mptm_months" value="1">March<br/>
-			<input type="radio" class="mptm_months" name="mptm_months" value="6">April<br/>
-			<input type="radio" class="mptm_months" name="mptm_months" value="5">May<br/>
-			<input type="radio" class="mptm_months" name="mptm_months" value="4">June<br/>
-			<input type="radio" class="mptm_months" name="mptm_months" value="3">July<br/>
-			<input type="radio" class="mptm_months" name="mptm_months" value="2">August<br/>
-			<input type="radio" class="mptm_months" name="mptm_months" value="1">September<br/>
-			<input type="radio" class="mptm_months" name="mptm_months" value="6">October<br/>
-			<input type="radio" class="mptm_months" name="mptm_months" value="5">November<br/>
-			<input type="radio" class="mptm_months" name="mptm_months" value="4">December<br/>
+			<input type="radio" class="mptm_months" name="mptm_months" value="jan">January<br/>
+			<input type="radio" class="mptm_months" name="mptm_months" value="feb">February<br/>
+			<input type="radio" class="mptm_months" name="mptm_months" value="mar">March<br/>
+			<input type="radio" class="mptm_months" name="mptm_months" value="apr">April<br/>
+			<input type="radio" class="mptm_months" name="mptm_months" value="may">May<br/>
+			<input type="radio" class="mptm_months" name="mptm_months" value="jun">June<br/>
+			<input type="radio" class="mptm_months" name="mptm_months" value="jul">July<br/>
+			<input type="radio" class="mptm_months" name="mptm_months" value="aug">August<br/>
+			<input type="radio" class="mptm_months" name="mptm_months" value="sep">September<br/>
+			<input type="radio" class="mptm_months" name="mptm_months" value="oct">October<br/>
+			<input type="radio" class="mptm_months" name="mptm_months" value="nov">November<br/>
+			<input type="radio" class="mptm_months" name="mptm_months" value="dec">December<br/>
 		</p>
 
 		<p>
