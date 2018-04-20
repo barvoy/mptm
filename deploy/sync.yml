@@ -1,0 +1,13 @@
+---
+- hosts: all
+  remote_user: vagrant
+  gather_facts: no
+  tasks:
+
+  - name: set foo
+    set_fact: domain="mptm.barvoy.com"
+
+  - name: Sync web app files over
+    synchronize:
+      src: ../app/
+      dest: "/var/www/{{ domain }}/"

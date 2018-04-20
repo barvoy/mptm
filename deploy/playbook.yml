@@ -66,12 +66,18 @@
       dest: "/etc/nginx/sites-enabled/{{ domain }}"
       state: link
 
+  - name: make a main web directory
+    file: path="/var/www/{{ domain }}" state=directory mode=0755
+
+  - name: make a new members directory
+    file: path="/var/www/{{ domain }}/newmem" state=directory mode=0300 owner=www-data
+
 #  - template:
 #      src: templates/etc/nginx/.htpasswd
 #      dest: /etc/nginx/.htpasswd
 #      owner: www-data
 #      group: root
 #      mode: 0600
-#
+
   - name: restart nginx
     service: name=nginx state=restarted enabled=yes
