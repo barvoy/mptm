@@ -1,5 +1,5 @@
-<?
-error_reporting(E_STRICT);
+<?php
+error_reporting(-1);
 
 
 include_once('lib.php');
