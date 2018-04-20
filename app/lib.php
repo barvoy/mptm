@@ -104,7 +104,7 @@ function get_order() {
 	return load_json_file('data.txt');
 }
 
-function make_hdr(string $num, string $name, float $val) : string {
+function make_hdr(string $num, string $name, string $val) : string {
 	$ostr = "";
 	$ostr .= "  <tr bgcolor=\"lightgray\">\n";
 	$ostr .= "    <th width=\"5%\">$num</th>\n";
@@ -114,7 +114,7 @@ function make_hdr(string $num, string $name, float $val) : string {
 	return $ostr;
 }
 
-function row_add(int $num, string $name, float $val) : string {
+function row_add(string $num, string $name, string $val) : string {
 	$val_padded = sprintf("%2.2f", $val);
 	$ostr = "";
 	$ostr .= "  <tr>\n";
@@ -164,12 +164,19 @@ function tm_str_total() : string {
 	return "Total";
 }
 
-function make_order_items_array($cfg, $order) {
+function month_name_to_idx(string $name) : int {
+	$month_names = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+	$ret = array_search($name, $month_names);
+	assert($ret != FALSE);
+	return (int)$ret;
+}
+
+function make_order_items_array($cfg, $order) : array {
 	assert($cfg != NULL);
 	assert($order != NULL);
 
 	$order_memb_type = $order->{'post'}->{'membership_type'};
-	$order_memb_start_mo = $order->{'post'}->{'tm_start_month'};
+	$order_memb_start_mo = month_name_to_idx($order->{'post'}->{'mptm_start_month'});
 	$club_cfg = $cfg->{'tm'}->{'clubs'}[0];
 
 	$item_all = [];
@@ -239,7 +246,11 @@ function make_full_table() : string {
 	assert($tbl != null);
 
 	foreach ($order_items as $arr_idx => $arr_row) {
-		$tbl .= row_add($arr_row[0], $arr_row[1], $arr_row[2]);
+		$tbl .= row_add(
+				sprintf("%d",$arr_row[0]),
+				$arr_row[1],
+				sprintf("%2.2f", $arr_row[2])
+			);
 	}
 	assert($tbl != null);
 

@@ -16,7 +16,7 @@ $sub_data = array(
 $fn = out_dir_name() . "/" . make_out_fn();
 json_file_save($sub_data, $fn);
 
-$_SESSION['fn'] = $fn_out;
+$_SESSION['fn'] = $fn;
 
 header("Location: /complete.php");
 
