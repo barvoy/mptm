@@ -1,4 +1,5 @@
 <?php
+error_reporting(-1);
 
 // Include the main TCPDF library (search for installation path).
 require_once('TCPDF-6.2.17/tcpdf.php');

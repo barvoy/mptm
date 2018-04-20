@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_STRICT);
+error_reporting(-1);
 
 
 function out_dir_name() {
