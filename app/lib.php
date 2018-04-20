@@ -100,8 +100,8 @@ function get_config() {
 	return load_json_file("config.json");
 }
 
-function get_order() {
-	return load_json_file('data.txt');
+function get_order(string $fn_in) {
+	return load_json_file($fn_in);
 }
 
 function make_hdr(string $num, string $name, string $val) : string {
@@ -235,9 +235,9 @@ function make_order_items_array($cfg, $order) : array {
 	return $item_all;
 }
 
-function make_full_table() : string {
+function make_full_table($order_fn) : string {
 	$cfg = get_config();
-	$order = get_order();
+	$order = get_order($order_fn);
 	$order_items = make_order_items_array($cfg, $order);
 
 	$tbl = "<table>\n";

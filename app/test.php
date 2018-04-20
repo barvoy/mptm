@@ -16,5 +16,5 @@ json_file_save([1,2,3], "nums.json");
 $j = load_json_file("nums.json");
 assert($j == [1,2,3]);
 
-print make_full_table();
+print make_full_table("data.txt");
 ?>

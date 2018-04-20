@@ -45,6 +45,14 @@ if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
 
 // ---------------------------------------------------------
 
+$fn_in = $_SESSION['fn'];
+$order = get_order($fn_in);
+assert($order != NULL);
+
+print_r($order);
+
+exit(0);
+
 $expl = <<<EOD
 Menlo Park Toastmasters is a chapter of a bigger non-profit organization
 called Toastmasters International (TMI). TMI provides us educational

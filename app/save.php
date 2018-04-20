@@ -18,6 +18,6 @@ json_file_save($sub_data, $fn);
 
 $_SESSION['fn'] = $fn;
 
-header("Location: /complete.php");
+header("Location: /genform.php");
 
 ?>
