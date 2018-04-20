@@ -5,3 +5,9 @@ app/config.js: app/config_in.yml
 
 s:
 	(cd app && php -S localhost:9091)
+d:
+	(cd deploy/ && ./runit.sh)
+s:
+	(cd deploy/ && ./sync.sh)
+clean:
+	rm -rf deploy/*.retry
