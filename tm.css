@@ -1,0 +1,37 @@
+body { font-family: sans-serif; }
+input.submit { background-color: lightyellow ; width: 10%; font-size: 100%; }
+span.req { color: red; }
+input { background-color: lightyellow; }
+legend { yellow; border: dotted 1px lightgray ;}
+.req_mark { background-color: lightyellow; }
+
+    body {
+	font-size: 220%;
+    }
+    p {
+	width: 100%;
+    }
+    input {
+    	font-size: 150%;
+    }
+    input[type="checkbox"] {
+    	size: 200%;
+	size: 100%;
+    }
+    input[type="text"] {
+        width: 100%;
+    }
+    input[type="submit"] {
+    	width: 100%;
+	background-color: lightgreen;
+    }
+    form {
+    	width: 100%;
+    }
+
+input[type=checkbox] {
+zoom: 2;
+}
+input[type=radio] {
+zoom: 2;
+}
