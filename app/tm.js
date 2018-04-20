@@ -1,3 +1,23 @@
+// @todo: mptm_months from form.php to jan,feb,mar
+//   then we can get this thing into json
+
+function month_names_short() {
+	return ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+}
+function month_idx(name) {
+	let names = month_names_short();
+
+	let idx = -1;
+
+	for (let ni = 0; ni < names.length; ni++) {
+		if (name == names[ni]) {
+			idx = ni;
+			break;
+		}
+	}
+	return idx;
+}
+
 function mptm_calc_dues(should_update_month) {
 	const ca_sales_tax = 1.55;
 	const mptm_monthly_fee = 2.50;
@@ -23,7 +43,13 @@ function mptm_calc_dues(should_update_month) {
 	let wi = 0;
 	for (let mptm_month_el of mptm_months_el) {
 		if (mptm_month_el.checked) {
-			how_many_months = parseInt(mptm_month_el.value);
+			// in theory we don't need that, but I want to make
+			// sure names jan,feb etc are getting nicely writted
+			// with POST to the output file.
+			midx = month_idx(mptm_month_el.value);
+			console.assert(midx >= 0 && midx <= 11, "midx !!  0..11");
+			how_many_months = (midx + 3) % 12; // cycle starts in april, which is 4th month (index=3)
+
 			which_month_to_start = wi;
 			break;
 		}
