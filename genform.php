@@ -2,7 +2,7 @@
 
 // Include the main TCPDF library (search for installation path).
 require_once('TCPDF-6.2.17/tcpdf.php');
-require_once('table.php');
+require_once('lib.php');
 
 // create new PDF document
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
