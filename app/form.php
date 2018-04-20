@@ -162,7 +162,7 @@ include_once('lib.php');
 
 		<p>
 			<b>CA sales tax</b><br />
-			<input type="radio" class="mptm_ca_tax" name="bleh" value="4" checked>$1.55<br/>
+			<input type="radio" class="mptm_ca_tax" name="mpta_ca_tax" value="1.55" checked>$1.55<br/>
 		</p>
 	</fieldset>
 

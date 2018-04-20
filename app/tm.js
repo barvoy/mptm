@@ -4,19 +4,6 @@
 function month_names_short() {
 	return ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 }
-function month_idx(name) {
-	let names = month_names_short();
-
-	let idx = -1;
-
-	for (let ni = 0; ni < names.length; ni++) {
-		if (name == names[ni]) {
-			idx = ni;
-			break;
-		}
-	}
-	return idx;
-}
 
 function mptm_calc_dues(should_update_month) {
 	const ca_sales_tax = 1.55;
@@ -43,12 +30,28 @@ function mptm_calc_dues(should_update_month) {
 	let wi = 0;
 	for (let mptm_month_el of mptm_months_el) {
 		if (mptm_month_el.checked) {
+			console.assert(month_names_short().indexOf("jan") == 0);
+
 			// in theory we don't need that, but I want to make
 			// sure names jan,feb etc are getting nicely writted
 			// with POST to the output file.
-			midx = month_idx(mptm_month_el.value);
+			midx = month_names_short().indexOf(mptm_month_el.value);
 			console.assert(midx >= 0 && midx <= 11, "midx !!  0..11");
-			how_many_months = (midx + 3) % 12; // cycle starts in april, which is 4th month (index=3)
+
+			// mo	which_mo	pro-rated in some months
+			// jan	0		3
+			// feb	1		2
+			// mar	2		1
+			// apr	3		6
+			// may	4		5
+			// june	5		4
+			// july	6		3
+			// aug	7		2
+			// sep	8		1
+			// oct	9		6
+			// nov	10		5
+			// dec	11		4
+			how_many_months = [3,2,1,6,5,4,3,2,1,6,5,4][midx];
 
 			which_month_to_start = wi;
 			break;
