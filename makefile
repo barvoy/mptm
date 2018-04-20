@@ -9,5 +9,9 @@ d:
 	(cd deploy/ && ./runit.sh)
 s:
 	(cd deploy/ && ./sync.sh)
+rs:
+	rsync -a root@mptm:/var/www/mptm.barvoy.com/ rapp/
+
 clean:
 	rm -rf deploy/*.retry
+
