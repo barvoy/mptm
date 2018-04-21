@@ -16,5 +16,17 @@ json_file_save([1,2,3], "nums.json");
 $j = load_json_file("nums.json");
 assert($j == [1,2,3]);
 
-print make_full_table("data.txt");
+$order = get_order("data.txt");
+assert($order != NULL);
+
+$cfg = get_config();
+assert($cfg != NULL);
+
+$order_items = make_order_items_array($cfg, $order);
+assert($order_items != NULL);
+
+print make_full_table($order_items);
+
+// @todo: commit edu_php
+
 ?>
