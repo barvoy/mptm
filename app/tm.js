@@ -1,5 +1,6 @@
 // @todo: mptm_months from form.php to jan,feb,mar
 //   then we can get this thing into json
+'use strict';
 
 function month_names_short() {
 	return ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
@@ -35,7 +36,7 @@ function mptm_calc_dues(should_update_month) {
 			// in theory we don't need that, but I want to make
 			// sure names jan,feb etc are getting nicely writted
 			// with POST to the output file.
-			midx = month_names_short().indexOf(mptm_month_el.value);
+			let midx = month_names_short().indexOf(mptm_month_el.value);
 			console.assert(midx >= 0 && midx <= 11, "midx !!  0..11");
 
 			// mo	which_mo	pro-rated in some months
@@ -100,12 +101,12 @@ function mptm_calc_dues(should_update_month) {
 let r1_el = document.getElementsByClassName('mptm_new_member_dues');
 let r2_el = document.getElementsByClassName('mptm_months');
 
-for (r_el of r1_el) {
+for (let r_el of r1_el) {
 	r_el.addEventListener('click', function() {
 		mptm_calc_dues(false);
 	});
 }
-for (r_el of r2_el) {
+for (let r_el of r2_el) {
 	r_el.addEventListener('click', function() {
 		mptm_calc_dues(false);
 	});
@@ -116,7 +117,7 @@ mptm_calc_dues(true);	// call it once to update a "checked" mark near the curren
 
 let mem_type_trans_data_el = document.getElementById('membership_type_transfer_data');
 let memb_types_el = document.getElementsByClassName('membership_type');
-for (memb_type_el of memb_types_el) {
+for (let memb_type_el of memb_types_el) {
 	console.log(memb_type_el);
 	memb_type_el.addEventListener('change', function (evt) {
 		console.log(evt);
