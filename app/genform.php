@@ -6,6 +6,9 @@ error_reporting(-1);
 require_once('TCPDF-6.2.17/tcpdf.php');
 require_once('lib.php');
 
+state_init();
+state_trans_from_to('save', 'genform.php');
+
 // create new PDF document
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -48,10 +51,20 @@ if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
 $fn_in = $_SESSION['fn'];
 $order = get_order($fn_in);
 assert($order != NULL);
+//print_r($order);
 
-print_r($order);
+$cfg = get_config();
+assert($cfg != NULL);
 
-exit(0);
+$order_items = make_order_items_array($cfg, $order);
+assert($order_items != NULL);
+
+// @todo: tools for php static analysis
+// @todo: php switch for strict code checking
+
+$tbl = make_full_table($order_items);
+
+// -----
 
 $expl = <<<EOD
 Menlo Park Toastmasters is a chapter of a bigger non-profit organization
@@ -62,8 +75,6 @@ Toastmasters conducts the meetings and sticks to TMI protocol.
 
 
 EOD;
-
-//
 
 // set font
 $pdf->SetFont('helvetica', 'B', 20);
@@ -78,12 +89,6 @@ $pdf->SetFont('helvetica', '', 12);
 $pdf->Write(0, $expl, '', 0, 'L', true, 0, false, false, 0);
 
 // ---------
-
-$cfg = get_config();
-$order = get_order();
-$order_items = make_order_items_array($cfg, $order);
-
-$tbl = make_full_table();
 
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
