@@ -176,7 +176,8 @@ function make_order_items_array($cfg, $order) : array {
 	assert($order != NULL);
 
 	$order_memb_type = $order->{'post'}->{'membership_type'};
-	$order_memb_start_mo = month_name_to_idx($order->{'post'}->{'mptm_start_month'});
+	$order_memb_start_mo = 1 + month_name_to_idx($order->{'post'}->{'mptm_start_month'});
+
 	$club_cfg = $cfg->{'tm'}->{'clubs'}[0];
 
 	$item_all = [];
@@ -235,15 +236,11 @@ function make_order_items_array($cfg, $order) : array {
 	return $item_all;
 }
 
-function make_full_table($order_fn) : string {
-	$cfg = get_config();
-	$order = get_order($order_fn);
-	$order_items = make_order_items_array($cfg, $order);
+function make_full_table($order_items) : string {
+	// @todo: null -> NULL in source code
 
 	$tbl = "<table>\n";
-
 	$tbl .= make_hdr("#", "Name", "Amount");
-	assert($tbl != null);
 
 	foreach ($order_items as $arr_idx => $arr_row) {
 		$tbl .= row_add(
@@ -252,15 +249,11 @@ function make_full_table($order_fn) : string {
 				sprintf("%2.2f", $arr_row[2])
 			);
 	}
-	assert($tbl != null);
 
 	$tbl .= "</table>\n";
+	assert($tbl != NULL);
 
 	return $tbl;
-}
-
-function unit_test() {
-	$tbl = make_full_table();
 }
 
 ?>
