@@ -9,6 +9,7 @@ include_once('lib.php');
 //	state_init();
 //	state_trans_from_to("init", "form");
 //}
+// @todo: find out standard field names so that the auto-fill wokrs ok
 ?>
 
 <html>
