@@ -256,4 +256,14 @@ function make_full_table($order_items) : string {
 	return $tbl;
 }
 
+function club_get_by_name($cfg, string $name) : ?stdClass {
+	$clubs_all = $cfg->{'tm'}->{'clubs'};
+	foreach ($clubs_all as $k => $v) {
+		if (strcmp($v->{'alias'}, $name) == 0) {
+			return $v;
+		}
+	}
+	return NULL;
+}
+
 ?>
