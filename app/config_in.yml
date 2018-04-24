@@ -17,4 +17,4 @@ tm:
         club_monthly:    2.50
         tmi_monthly:     7.50
         ca_tax_rate_mul: 0.0725
-        paypay_rate_mul: 0.0290
+        paypal_rate_mul: 0.0290

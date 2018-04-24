@@ -12,7 +12,7 @@
           "club_monthly": 2.5,
           "tmi_monthly": 7.5,
           "ca_tax_rate_mul": 0.0725,
-          "paypay_rate_mul": 0.029
+          "paypal_rate_mul": 0.029
         }
       }
     ]

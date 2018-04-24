@@ -216,7 +216,7 @@ function make_order_items_array($cfg, $order) : array {
 	$item_num += 1;
 
 	// y. charge PayPal rate
-	$paypal_rate = $club_cfg->{'fees'}->{'paypay_rate_mul'};
+	$paypal_rate = $club_cfg->{'fees'}->{'paypal_rate_mul'};
 	$total_so_far = 0;
 	foreach ($item_all as $arr_idx => $arr) {
 		$total_so_far += $arr[2];

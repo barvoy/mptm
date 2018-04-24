@@ -1,4 +1,4 @@
-all: app/config.js
+all: app/config.json
 
 app/config.json: app/config_in.yml
 	./scripts/run_this_when_cfg_changed.rb app/config_in.yml  > app/config.json
