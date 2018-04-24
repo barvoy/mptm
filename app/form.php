@@ -1,5 +1,6 @@
 <?php
 // @todo: modefiles
+// @todo: regex in fields to check for correctness?
 declare(strict_types=1);
 error_reporting(-1);
 
@@ -287,6 +288,7 @@ include_once('lib.php');
 
 	</form>
 
+<script src="club.php?alias=mptm"></script>
 <script src="tm.js"></script>
 
 <hr />

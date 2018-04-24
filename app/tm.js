@@ -7,10 +7,14 @@ function month_names_short() {
 }
 
 function mptm_calc_dues(should_update_month) {
-	const ca_sales_tax = 1.55;
-	const mptm_monthly_fee = 2.50;
-	const tmi_monthly_fee = 7.50;
-	const new_member_fee = 20;
+	const ca_sales_tax     = 100 * parseFloat(club_info['fees']['ca_tax_rate_mul']);
+	const mptm_monthly_fee = parseFloat(club_info['fees']['club_monthly']);
+	const tmi_monthly_fee  = parseFloat(club_info['fees']['tmi_monthly']);
+	const new_member_fee   = parseFloat(club_info['fees']['init_onetime']);
+	const paypal_rate_mul  = 100 * parseFloat(club_info['fees']['paypay_rate_mul']);
+
+
+	console.log(club_info);
 
 	const cur_date = new Date();
 	const cur_month_day = cur_date.getDate();
