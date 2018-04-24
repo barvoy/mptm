@@ -75,7 +75,15 @@ function mptm_calc_dues(should_update_month) {
 	let to_pay_base = (mptm_monthly_fee + tmi_monthly_fee)*how_many_months + (new_member_fee*is_new_member);
 	let to_pay_just_tax = to_pay_base * state_tax_rate_mul;
 	let to_pay_w_state_tax = to_pay_base * (1 + state_tax_rate_mul);
-	let to_pay = to_pay_w_state_tax * (1 + paypal_rate_mul);
+	let to_pay_just_paypal = to_pay_w_state_tax * paypal_rate_mul;
+	let to_pay_w_paypal = to_pay_w_state_tax * (1 + paypal_rate_mul);
+	let to_pay = to_pay_w_paypal;
+
+	to_pay_just_tax = to_pay_just_tax.toFixed(2);
+	to_pay_w_state_tax = to_pay_w_state_tax.toFixed(2);
+	to_pay_just_paypal = to_pay_just_paypal.toFixed(2);
+	to_pay_w_paypal = to_pay_w_paypal.toFixed(2);
+	to_pay = to_pay.toFixed(2);
 
 	console.assert(to_pay !== null);
 	console.assert(!Number.isNaN(to_pay));
@@ -98,6 +106,7 @@ function mptm_calc_dues(should_update_month) {
 		+ "/month): $" + ((mptm_monthly_fee+tmi_monthly_fee)*how_many_months)+ "<br/>"
 		+ (is_new_member ? ("<li>New member initiation fee: $" + new_member_fee) : "")
 		+ "<li>CA sales tax: $" + (to_pay_just_tax)
+		+ "<li>PayPal transaction fee: $" + (to_pay_just_paypal)
 		;
 
 	//console.log(how_many_months, is_new_member);
