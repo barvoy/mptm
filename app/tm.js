@@ -7,12 +7,11 @@ function month_names_short() {
 }
 
 function mptm_calc_dues(should_update_month) {
-	const ca_sales_tax     = 100 * parseFloat(club_info['fees']['ca_tax_rate_mul']);
-	const mptm_monthly_fee = parseFloat(club_info['fees']['club_monthly']);
-	const tmi_monthly_fee  = parseFloat(club_info['fees']['tmi_monthly']);
-	const new_member_fee   = parseFloat(club_info['fees']['init_onetime']);
-	const paypal_rate_mul  = 100 * parseFloat(club_info['fees']['paypay_rate_mul']);
-
+	const state_tax_rate_mul = parseFloat(club_info['fees']['ca_tax_rate_mul']);
+	const paypal_rate_mul    = parseFloat(club_info['fees']['paypal_rate_mul']);
+	const mptm_monthly_fee   = parseFloat(club_info['fees']['club_monthly']);
+	const tmi_monthly_fee    = parseFloat(club_info['fees']['tmi_monthly']);
+	const new_member_fee     = parseFloat(club_info['fees']['init_onetime']);
 
 	console.log(club_info);
 
@@ -73,11 +72,13 @@ function mptm_calc_dues(should_update_month) {
 	console.assert(is_new_member != null, "ops2");
 	console.assert(which_month_to_start != null, "ops3");
 
-	let to_pay = (mptm_monthly_fee + tmi_monthly_fee)*how_many_months
-			+ (new_member_fee*is_new_member)
-			+ ca_sales_tax;
+	let to_pay_base = (mptm_monthly_fee + tmi_monthly_fee)*how_many_months + (new_member_fee*is_new_member);
+	let to_pay_just_tax = to_pay_base * state_tax_rate_mul;
+	let to_pay_w_state_tax = to_pay_base * (1 + state_tax_rate_mul);
+	let to_pay = to_pay_w_state_tax * (1 + paypal_rate_mul);
 
-
+	console.assert(to_pay !== null);
+	console.assert(!Number.isNaN(to_pay));
 
 	let mptm_total_pay_el = document.getElementById('mptm_total_pay');
 	mptm_total_pay_el.innerHTML = "Total: $" + to_pay;
@@ -96,7 +97,7 @@ function mptm_calc_dues(should_update_month) {
 		+ " 1 ($" + (mptm_monthly_fee + tmi_monthly_fee)
 		+ "/month): $" + ((mptm_monthly_fee+tmi_monthly_fee)*how_many_months)+ "<br/>"
 		+ (is_new_member ? ("<li>New member initiation fee: $" + new_member_fee) : "")
-		+ "<li>CA sales tax: $" + (ca_sales_tax)
+		+ "<li>CA sales tax: $" + (to_pay_just_tax)
 		;
 
 	//console.log(how_many_months, is_new_member);
