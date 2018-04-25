@@ -1,10 +1,12 @@
-body { font-family: sans-serif; }
-input.submit { background-color: lightyellow ; width: 10%; font-size: 100%; }
-span.req { color: red; }
-input { background-color: lightyellow; }
-legend { yellow; border: dotted 1px lightgray ;}
-.req_mark { background-color: lightyellow; }
+body         { font-family: sans-serif; }
+input.submit { background-color: lightyellow ; width: 10%; font-size: 100%; margin: 1%; }
+span.req     { color: red; }
+input        { background-color: lightyellow; }
+legend       { yellow; border: dotted 1px lightgray ;}
+.req_mark    { background-color: lightyellow; }
 
+
+@media only screen and (max-device-width: 587px) {
     body {
 	font-size: 220%;
     }
@@ -14,24 +16,31 @@ legend { yellow; border: dotted 1px lightgray ;}
     input {
     	font-size: 150%;
     }
+
     input[type="checkbox"] {
-    	size: 200%;
-	size: 100%;
+        zoom: 3;
     }
+    input[type="checkbox"]:checked {
+        background-color: green;
+    }
+
+    input[type=radio] {
+        zoom: 3;
+    }
+    input[type=radio]:checked {
+        background-color: green;
+    }
+
     input[type="text"] {
         width: 100%;
     }
     input[type="submit"] {
     	width: 100%;
 	background-color: lightgreen;
+	font-size: 200%;
     }
     form {
     	width: 100%;
     }
-
-input[type=checkbox] {
-zoom: 2;
-}
-input[type=radio] {
-zoom: 2;
+    .mptm_months { margin-bottom: 5%; }
 }
