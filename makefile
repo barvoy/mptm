@@ -8,6 +8,10 @@ app/config.json: app/config_in.yml
 S:
 	qrcode-terminal http://${IP}:9091
 	(cd app && php -S ${IP}:9091)
+SL:
+	qrcode-terminal http://localhost:9091
+	(cd app && php -S localhost:9091)
+
 d:
 	(cd deploy/ && ./runit.sh)
 s:
