@@ -16,6 +16,8 @@ function fail_on_error() {
 
 fail_on_error();
 
+function gcfg_max_size() : int	{ return 1024*16; }
+
 function out_dir_name() : string {
 	$here = getcwd();
 	$base = "newmem";
@@ -95,9 +97,15 @@ function load_json_file(string $fn) {
 	return $ret_obj;
 }
 
-function json_file_save($obj, $fn_out) {
+function json_file_save($obj, string $fn_out, int $max_size) : bool {
 	$j_str = json_encode($obj, JSON_PRETTY_PRINT);
 	assert($j_str != FALSE);
+
+	if ($max_size != -1) {
+		if (strlen($j_str) > $max_size) {
+			return FALSE;
+		}
+	}
 
 	$fp = fopen($fn_out, 'w');
 	assert($fp != FALSE);
@@ -107,6 +115,8 @@ function json_file_save($obj, $fn_out) {
 
 	$rc = fclose($fp);
 	assert($rc != FALSE);
+
+	return TRUE;
 }
 
 

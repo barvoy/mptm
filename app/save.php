@@ -14,10 +14,8 @@ $sub_data = array(
 	"get" => $_GET
 );
 
-// @todo: check the size of sub_data here
-
 $fn = out_dir_name() . "/" . make_out_fn();
-json_file_save($sub_data, $fn);
+json_file_save($sub_data, $fn, gcfg_max_size());
 
 $_SESSION['fn'] = $fn;
 
