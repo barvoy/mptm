@@ -1,0 +1,28 @@
+{
+    "post": {
+        "firstname": "Adam",
+        "middlename": "John",
+        "lastname": "Smith",
+        "gender": "other",
+        "address1": "123 Sample street",
+        "address2": "Apt 9",
+        "zipcode": "12123",
+        "city": "The City",
+        "state": "California",
+        "email": "adam@smith.org",
+        "mptm_new_member": "1",
+        "mptm_start_month": "may",
+        "mpta_ca_tax": "1.55",
+        "membership_type": "new",
+        "trans_prev_club_name": "",
+        "trans_prev_club_num": "",
+        "trans_memb_number": "",
+        "club_city": "Menlo Park",
+        "club_name": "Menlo Park Toastmasters",
+        "club_number": "1372",
+        "tm_agree_promise": "on",
+        "tm_agree_release": "on",
+        "tm_agree_verif": "on"
+    },
+    "get": []
+}

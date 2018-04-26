@@ -6,7 +6,7 @@ error_reporting(-1);
 require_once('lib.php');
 fail_on_error();
 
-$order = get_order("data.txt");
+$order = get_order("../data/data.txt");
 assert($order != NULL);
 $cfg = get_config();
 assert($cfg != NULL);

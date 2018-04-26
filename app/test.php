@@ -17,7 +17,7 @@ json_file_save([1,2,3], "nums.json", -1);
 $j = load_json_file("nums.json");
 assert($j == [1,2,3]);
 
-$order = get_order("data.txt");
+$order = get_order("../data/data.txt");
 assert($order != NULL);
 
 $cfg = get_config();
