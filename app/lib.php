@@ -2,6 +2,20 @@
 declare(strict_types=1);
 error_reporting(-1);
 
+require_once('TCPDF-6.2.17/tcpdf.php');
+require_once('TCPDF-6.2.17/tcpdf_barcodes_2d.php');
+require_once('TCPDF-6.2.17/tcpdf_barcodes_1d.php');
+
+function fail_on_err_handler($err_num, $err_str, $err_file, $err_line) {
+	throw new ErrorException("$err_num $err_str $err_file:$err_line");
+}
+
+function fail_on_error() {
+	set_error_handler('fail_on_err_handler');
+}
+
+fail_on_error();
+
 function out_dir_name() : string {
 	$here = getcwd();
 	$base = "newmem";
@@ -115,7 +129,7 @@ function make_hdr(string $num, string $name, string $val) : string {
 }
 
 function row_add(string $num, string $name, string $val) : string {
-	$val_padded = sprintf("%2.2f", $val);
+	$val_padded = sprintf("$%2.2f", $val);
 	$ostr = "";
 	$ostr .= "  <tr>\n";
 	$ostr .= "    <td>$num</td>\n";
@@ -127,7 +141,6 @@ function row_add(string $num, string $name, string $val) : string {
 
 // @todo: usb -> usd
 function tm_str_usb_amt(float $val) : string {
-	// @todo: assert float
 	return sprintf("$%2.2f", $val);
 }
 
@@ -135,10 +148,9 @@ function tm_str_new_mem_ini_fee() : string {
 	return "Toastmasters International: new member processing fee";
 }
 
-function tm_str_monthly(int $how_many_months, float $how_much_per_month) : string {
+function tm_str_monthly(int $how_many_months, float $how_much_per_month, string $name = "Toastmasters International") : string {
 	assert($how_many_months >= 1 && $how_many_months <= 12);
-	// @todo: assert ints
-	return "Toastmasters International: $how_many_months * " . tm_str_usb_amt($how_much_per_month);
+	return "$name: $how_many_months * " . tm_str_usb_amt($how_much_per_month);
 }
 
 function assert_rate(float $rate) {
@@ -149,12 +161,11 @@ function tm_str_ca_tax(float $rate) : string {
 	assert_rate($rate);
 	$pc_rate = $rate * 100;
 	$pc_rate .= "%";
-	return "CA Tax of $pc_rate";
+	return "CA sales tax (San Mateo) of $pc_rate";
 }
 
 function tm_str_paypal(float $rate) : string {
 	assert_rate($rate);
-	// @todo: find a library for secure type conversion in PHP or check if types are strictly enforced in PHP7
 	$pc_rate = $rate * 100;
 	$pc_rate .= "%";
 	return "PayPal payment processing rate of $pc_rate";
@@ -200,7 +211,7 @@ function make_order_items_array($cfg, $order) : array {
 	// c. we charge club's per-month fee
 	$club_mo_cost = $club_cfg->{'fees'}->{'club_monthly'};
 	$amt = $order_memb_start_mo * $club_mo_cost;
-	array_push($item_all, [ $item_num, tm_str_monthly($order_memb_start_mo, $club_mo_cost), $amt ]);
+	array_push($item_all, [ $item_num, tm_str_monthly($order_memb_start_mo, $club_mo_cost, "Menlo Park Toastmasters"), $amt ]);
 	$item_num += 1;
 
 	// add itemized charges here
@@ -244,7 +255,7 @@ function make_full_table($order_items) : string {
 
 	foreach ($order_items as $arr_idx => $arr_row) {
 		$tbl .= row_add(
-				sprintf("%d",$arr_row[0]),
+				sprintf("%s",$arr_row[0]),
 				$arr_row[1],
 				sprintf("%2.2f", $arr_row[2])
 			);
@@ -264,6 +275,105 @@ function club_get_by_name($cfg, string $name) : ?stdClass {
 		}
 	}
 	return NULL;
+}
+
+function pdf_generate(string $html) {
+	// create new PDF document
+	$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+	// set document information
+	$pdf->SetCreator("");
+	$pdf->SetAuthor('Menlo Park Toastmasters');
+	$pdf->SetTitle('Menlo Park Toastmasters, receipt');
+	$pdf->SetSubject('Menlo Park Toastmasters, receipt');
+	$pdf->SetKeywords('Menlo Park, Toastmasters, receipt, bill');
+
+	// set default header data
+	//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 048', PDF_HEADER_STRING);
+
+	// set header and footer fonts
+	$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+	$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+	// set default monospaced font
+	$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+	// set margins
+	$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+	$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+	$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+	// set auto page breaks
+	$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+	// set image scale factor
+	$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+	// set some language-dependent strings (optional)
+	if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+		require_once(dirname(__FILE__).'/lang/eng.php');
+		$pdf->setLanguageArray($l);
+	}
+
+	// set font
+	$pdf->SetFont('helvetica', '', 12);
+
+	// add a page
+	$pdf->AddPage();
+
+	// writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
+	$pdf->writeHTML($html, false, false, false, false, 'L');
+
+	$pdf->Output('receipt.pdf', 'I');
+}
+
+function pdf_report_make($cfg, array $order_items) : string {
+	$total_raw = $order_items[count($order_items) - 1][2];
+	$total = sprintf("%2.2f", $total_raw);
+	$link = "https://paypal.me/mptm/$total";
+	$table = make_full_table($order_items);
+
+	$tbl = "";
+	$tbl .= "<html><body>";
+
+	$tbl .= "<h1>Menlo Park Toastmasters: Membership!</h1>";
+
+	$tbl .= "<p>";
+	$tbl .= "Menlo Park Toastmasters is a chapter of a bigger non-profit organization";
+	$tbl .= "called Toastmasters International (TMI). TMI provides us educational";
+	$tbl .= "materials and a structured program for out meetings, while Menlo Park";
+	$tbl .= "Toastmasters conducts the meetings and sticks to TMI protocol.";
+	$tbl .= "</p>";
+
+	$tbl .= "<h2>Pay online:</h2>";
+	$tbl .= "<p>";
+	$tbl .= "You can pay with Debit/Credit Card or PayPal here:";
+	$tbl .= "</p>";
+	$tbl .= '<a href="'.$link.'"><h2>Click HERE to pay $' . $total . '</h2></a>';
+
+//	$tbl .= "<h2>QR code</h2>";
+	$tbl .= "<p>To pay from iPhone, scan this image with iPhone camera:</p>";
+	$tbl .= '<img src="https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$link.'&choe=UTF-8" />';
+
+	$tbl .= "<p></p>";
+
+	$tbl .= "<h3>Explanation of fees:</h3>";
+
+	$tbl .= $table;
+
+	$tbl .= "<p>";
+	$tbl .= "This receipt is only valid when presented with a proof of payment.";
+	$tbl .= "</p>";
+
+
+	$tbl .= "<h2>Questions?</h2>";
+	$tbl .= "<p>";
+	$tbl .= 'E-mail <a href="mailto:treasurer@menloparktm.org">treasurer@menloparktm.org</a> in case you have any questions.';
+	$tbl .= "</p>";
+
+	$tbl .= "</body>";
+	$tbl .= "</html>";
+	return $tbl;
 }
 
 ?>

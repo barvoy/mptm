@@ -4,6 +4,7 @@ declare(strict_types=1);
 error_reporting(-1);
 
 require_once('lib.php');
+fail_on_error();
 
 print out_dir_name();
 print has_enough_disk_space();
@@ -34,4 +35,8 @@ print_r(club_get_by_name($cfg, 'mptm'));
 echo "# ------ club search. should get NULL";
 print_r(club_get_by_name($cfg, 'bleh'));
 echo "\n";
+
+$rep = pdf_report_make($cfg, $order_items);
+echo $rep;
+
 ?>
