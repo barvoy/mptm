@@ -16,6 +16,8 @@ print_r(pre_check_all());
 json_file_save([1,2,3], "nums.json", -1);
 $j = load_json_file("nums.json");
 assert($j == [1,2,3]);
+$rc = unlink("nums.json");
+assert($rc == TRUE);
 
 $order = get_order("../data/data.txt");
 assert($order != NULL);
