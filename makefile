@@ -19,6 +19,8 @@ s:
 rs:
 	rsync -a root@mptm:/var/www/mptm.barvoy.com/ rapp/
 
+lint:
+	/bin/ls -1 */*.php | xargs -n 1 php -l
 
 clean:
 	rm -rf deploy/*.retry
