@@ -4,6 +4,8 @@ error_reporting(-1);
 
 require_once('lib.php');
 
+fail_on_error();
+
 //state_init();
 //state_trans_from_to('save', 'genform.php');
 

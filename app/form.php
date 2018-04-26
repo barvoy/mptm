@@ -5,6 +5,7 @@ declare(strict_types=1);
 error_reporting(-1);
 
 include_once('lib.php');
+fail_on_error();
 // @todo: uncomment after development
 //if (TRUE) {
 //	state_init();
