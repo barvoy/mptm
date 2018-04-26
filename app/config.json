@@ -11,7 +11,7 @@
           "renew_onetime": 0.0,
           "club_monthly": 2.5,
           "tmi_monthly": 7.5,
-          "ca_tax_rate_mul": 0.0725,
+          "ca_tax_rate_mul": 0.0925,
           "paypal_rate_mul": 0.029
         }
       }
