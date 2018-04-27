@@ -13,7 +13,6 @@ function mptm_calc_dues(should_update_month) {
 	const tmi_monthly_fee    = parseFloat(club_info['fees']['tmi_monthly']);
 	const new_member_fee     = parseFloat(club_info['fees']['init_onetime']);
 
-	console.log(club_info);
 
 	const cur_date = new Date();
 	const cur_month_day = cur_date.getDate();
@@ -125,9 +124,6 @@ for (let r_el of r2_el) {
 		mptm_calc_dues(false);
 	});
 }
-
-mptm_calc_dues(true);	// call it once to update a "checked" mark near the current month
-
 
 let mem_type_trans_data_el = document.getElementById('membership_type_transfer_data');
 let memb_types_el = document.getElementsByClassName('membership_type');

@@ -6,6 +6,7 @@ require_once('lib.php');
 
 fail_on_error();
 
+
 //state_init();
 //state_trans_from_to('save', 'genform.php');
 
@@ -17,8 +18,10 @@ assert($name != NULL);
 
 $club_info = club_get_by_name($cfg, $name);
 
-$ret_str = "var club_info = " . json_encode($club_info, JSON_PRETTY_PRINT) . ";";
+$ret_str = json_encode($club_info, JSON_PRETTY_PRINT);
 
+header('Content-Type: application/javascript');
+//header('Content-Type: application/json');
 echo $ret_str;
 
 ?>

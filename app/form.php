@@ -165,11 +165,6 @@ fail_on_error();
 			<input type="radio" class="mptm_months" name="mptm_start_month" value="nov" />November<br/>
 			<input type="radio" class="mptm_months" name="mptm_start_month" value="dec" />December<br/>
 		</p>
-
-		<p>
-			<b>CA sales tax</b><br />
-			<input type="radio" class="mptm_ca_tax" name="mpta_ca_tax" value="1.55" checked>$1.55<br/>
-		</p>
 	</fieldset>
 
 
@@ -289,8 +284,33 @@ fail_on_error();
 
 	</form>
 
-<script src="club.php?alias=mptm"></script>
+<script>
+
+function loadJSON(callback) {
+	var xobj = new XMLHttpRequest();
+	xobj.overrideMimeType("application/json");
+	xobj.open('GET', 'club.php?alias=mptm', true);
+	xobj.onreadystatechange = function() {
+		if (xobj.readyState == 4 && xobj.status == "200") {
+			console.log("everything ok!");
+			callback(xobj.responseText);
+		}
+	}
+	xobj.send(null);
+}
+
+club_info = null;
+
+loadJSON(function(response) {
+	console.log(response);
+	club_info = JSON.parse(response);
+	mptm_calc_dues(true);	// call it once to update a "checked" mark near the current month
+});
+
+</script>
 <script src="tm.js"></script>
+
+
 
 <hr />
 <small>

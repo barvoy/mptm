@@ -35,7 +35,7 @@ print make_full_table($order_items);
 echo "# ------ club search. should get something";
 print_r(club_get_by_name($cfg, 'mptm'));
 echo "# ------ club search. should get NULL";
-print_r(club_get_by_name($cfg, 'bleh'));
+print_r(club_get_by_name($cfg, 'bleh') == NULL);
 echo "\n";
 
 $rep = pdf_report_make($cfg, $order_items);
