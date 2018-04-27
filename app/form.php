@@ -272,7 +272,7 @@ fail_on_error();
 		<h3 id="mptm_total_pay">Total: </h3>
 		</p>
 
-		<p>
+		<p hidden>
 		<a id="pay_link" href=""></a>
 		<br/>
 		<br/>
