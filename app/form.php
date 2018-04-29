@@ -1,6 +1,5 @@
 <?php
 // @todo: modefiles
-// @todo: regex in fields to check for correctness?
 declare(strict_types=1);
 error_reporting(-1);
 
@@ -81,10 +80,10 @@ fail_on_error();
 
 
 		<div class="lineitem">
-			<label for="address1">Address 1:</label>
+			<label for="street">Address 1:</label>
 			<span class="req">*</span>
 			<br />
-			<input required type="text" id="address1" name="address1" placeholder="Address 1..." width="100%" />
+			<input required type="text" id="street" name="street" placeholder="Address 1..." width="100%" />
 		</div>
 		<br />
 
@@ -100,7 +99,7 @@ fail_on_error();
 			<label for="zipcode">ZIP code:</label>
 			<span class="req">*</span>
 			<br />
-			<input required type="text" id="zipcode" name="zipcode" placeholder="xxxxx" size=5>
+			<input required type="text" id="zipcode" name="zipcode" placeholder="xxxxx" pattern="^[0-9]{5}$" size=5>
 			<br />
 		</div>
 		<br />
@@ -127,7 +126,7 @@ fail_on_error();
 			<label for="email">E-mail:</label>
 			<span class="req">*</span>
 			<br />
-			<input required type="text" id="email" name="email" placeholder="Your e-mail..." size=20 />
+			<input required type="email" id="email" name="email" placeholder="Your e-mail..." size=20 />
 			<br />
 		</div>
 	</fieldset>
