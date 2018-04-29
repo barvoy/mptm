@@ -1,5 +1,3 @@
-// @todo: mptm_months from form.php to jan,feb,mar
-//   then we can get this thing into json
 'use strict';
 
 function month_names_short() {
