@@ -14,7 +14,7 @@ if ($ret[0] != 0) {
 }
 
 state_init();
-state_trans_from_to(null, "init");
+state_trans_from_to(NULL, "init");
 
 header("Location: /form.php");
 ?>
