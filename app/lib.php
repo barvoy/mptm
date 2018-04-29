@@ -66,17 +66,14 @@ function state_init() {
 	assert($rc == TRUE);
 }
 
-function state_trans_from_to(string $from = null, string $to) {
-	if ($from != null) {
+function state_trans_from_to(string $from = NULL, string $to) {
+	if ($from != NULL) {
 		if ($_SESSION['state'] != $from) {
 			header("Location: /error.html");
 		}
 	}
 	$_SESSION['state'] = $to;
 }
-
-
-// @todo: enable warnings everywhere
 
 function load_json_file(string $fn) {
 	$fp = fopen($fn, 'r');
@@ -149,8 +146,7 @@ function row_add(string $num, string $name, string $val) : string {
 	return $ostr;
 }
 
-// @todo: usb -> usd
-function tm_str_usb_amt(float $val) : string {
+function tm_str_usd_amt(float $val) : string {
 	return sprintf("$%2.2f", $val);
 }
 
@@ -160,7 +156,7 @@ function tm_str_new_mem_ini_fee() : string {
 
 function tm_str_monthly(int $how_many_months, float $how_much_per_month, string $name = "Toastmasters International") : string {
 	assert($how_many_months >= 1 && $how_many_months <= 12);
-	return "$name: $how_many_months * " . tm_str_usb_amt($how_much_per_month);
+	return "$name: $how_many_months * " . tm_str_usd_amt($how_much_per_month);
 }
 
 function assert_rate(float $rate) {
@@ -258,8 +254,6 @@ function make_order_items_array($cfg, $order) : array {
 }
 
 function make_full_table($order_items) : string {
-	// @todo: null -> NULL in source code
-
 	$tbl = "<table>\n";
 	$tbl .= make_hdr("#", "Name", "Amount");
 
@@ -384,6 +378,27 @@ function pdf_report_make($cfg, array $order_items) : string {
 	$tbl .= "</body>";
 	$tbl .= "</html>";
 	return $tbl;
+}
+
+function version_num_verify(string $num_str) : int {
+	$num = (int)$num_str;
+	assert($num >= 0 && $num <= 99);
+	return $num;
+}
+
+function php_version_int() : int {
+	$ver_str = phpversion();
+	$chunks = explode('.', $ver_str);
+
+	assert(count($chunks) == 3);
+
+	$vmaj   = version_num_verify($chunks[0]);
+	$vmin   = version_num_verify($chunks[1]);
+	$vpatch = version_num_verify($chunks[2]);
+
+	$vint =	($vmaj * pow(10,4)) + ($vmin * pow(10,2)) + $vpatch;
+
+	return $vint;
 }
 
 ?>
