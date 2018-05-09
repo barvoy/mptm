@@ -6,11 +6,10 @@ error_reporting(-1);
 include_once('lib.php');
 fail_on_error();
 // @todo: uncomment after development
-//if (TRUE) {
-//	state_init();
-//	state_trans_from_to("init", "form");
-//}
-// @todo: find out standard field names so that the auto-fill wokrs ok
+if (TRUE) {
+	state_init();
+	state_trans_from_to("init", "form");
+}
 ?>
 
 <html>
@@ -40,7 +39,7 @@ fail_on_error();
 	<span class="req">*</span> fields are required
 	<br />
 
-	<form action="save.php" method="post">
+	<form action="genform.php" method="post">
 
 	<fieldset>
 		<legend>Personal information</legend>

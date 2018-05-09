@@ -16,51 +16,6 @@ function fail_on_error() {
 
 fail_on_error();
 
-function gcfg_max_size() : int	{ return 1024*16; }
-
-function out_dir_name() : string {
-	$here = getcwd();
-	$base = "newmem";
-
-	$dn = $here . "/" . $base;
-
-	return $dn;
-}
-
-function has_enough_disk_space() : bool {
-	$dn = out_dir_name();
-	$mb = 1024.0*1024.0;
-	$fsz_mb = disk_free_space($dn) / $mb;
-	return ($fsz_mb > 1.0);
-}
-
-function pre_check_all() : array {
-	$dn = out_dir_name();
-	if (!file_exists($dn) || !is_dir($dn)) {
-		return[-__LINE__, "The server isn't properly setup to accept your application"];
-	}
-	if (stat($dn)['mode'] == 40777) {
-		return[-__LINE__, "The server's directory isn't properly configured"];
-	}
-	if (!has_enough_disk_space()) {
-		return [-__LINE__, "No space on disk to save your submission"];
-	}
-	return [0, "ok"];
-}
-
-function make_random_fn() : string {
-	$random_str = "";
-	for ($i = 0; $i < 4; $i++) {
-		$ri = random_int (0x0, 0xffffffff);
-		$random_str .= "x" . $ri;
-	}
-	return sha1($random_str);
-}
-
-function make_out_fn() : string {
-	return "newmem." . make_random_fn();
-}
-
 function state_init() {
 	$rc = session_start();
 	assert($rc == TRUE);
@@ -75,7 +30,7 @@ function state_trans_from_to(string $from = NULL, string $to) {
 	$_SESSION['state'] = $to;
 }
 
-function load_json_file(string $fn) {
+function load_json_file(string $fn) : array {
 	$fp = fopen($fn, 'r');
 	assert($fp != FALSE);
 
@@ -88,41 +43,48 @@ function load_json_file(string $fn) {
 	$rc = fclose($fp);
 	assert($rc != FALSE);
 
-	$ret_obj = json_decode($data_read);
-	assert($ret_obj != NULL);
+	$obj = json_decode($data_read);
+	assert($obj != NULL);
 
-	return $ret_obj;
+	$arr = get_object_vars($obj);
+	return $arr;
 }
-
-function json_file_save($obj, string $fn_out, int $max_size) : bool {
-	$j_str = json_encode($obj, JSON_PRETTY_PRINT);
-	assert($j_str != FALSE);
-
-	if ($max_size != -1) {
-		if (strlen($j_str) > $max_size) {
-			return FALSE;
-		}
-	}
-
-	$fp = fopen($fn_out, 'w');
-	assert($fp != FALSE);
-
-	$rc = fwrite($fp, $j_str);
-	assert($rc != FALSE);
-
-	$rc = fclose($fp);
-	assert($rc != FALSE);
-
-	return TRUE;
-}
-
 
 function get_config() {
 	return load_json_file("config.json");
 }
 
-function get_order(string $fn_in) {
-	return load_json_file($fn_in);
+
+// From OWASP page
+function xssafe($data,$encoding='UTF-8') {
+	return htmlspecialchars($data,ENT_QUOTES | ENT_HTML401,$encoding);
+}
+
+function trim_to_len(string $s, int $len) : string {
+	return substr($s, 0, $len);
+}
+
+function post_make_sane(array $post_req) : array {
+	$max_field_len = 256;
+	$max_num_of_fields = 50;
+	$arr = array();
+
+	$field_num = 0;
+	foreach ($post_req as $raw_key => $raw_value) {
+		$key = xssafe(trim_to_len($raw_key, $max_field_len));
+		$value = xssafe(trim_to_len($raw_value, $max_field_len));
+
+		$arr[$key] = $value;
+		$field_num += 1;
+
+		assert($field_num < $max_num_of_fields);
+	}
+
+	return $arr;
+}
+
+function get_order_from_post(array $tained_post_data) {
+	return post_make_sane($tained_post_data);
 }
 
 function make_hdr(string $num, string $name, string $val) : string {
@@ -188,14 +150,11 @@ function month_name_to_idx(string $name) : int {
 	return (int)$ret;
 }
 
-function make_order_items_array($cfg, $order) : array {
-	assert($cfg != NULL);
-	assert($order != NULL);
+function make_order_items_array(array $cfg, array $order) : array {
+	$order_memb_type = $order['membership_type'];
+	$order_memb_start_mo = 1 + month_name_to_idx($order['mptm_start_month']);
 
-	$order_memb_type = $order->{'post'}->{'membership_type'};
-	$order_memb_start_mo = 1 + month_name_to_idx($order->{'post'}->{'mptm_start_month'});
-
-	$club_cfg = $cfg->{'tm'}->{'clubs'}[0];
+	$club_cfg = $cfg['tm']->{'clubs'}[0];
 
 	$item_all = [];
 	$item_num = 1;
@@ -272,7 +231,7 @@ function make_full_table($order_items) : string {
 }
 
 function club_get_by_name($cfg, string $name) {
-	$clubs_all = $cfg->{'tm'}->{'clubs'};
+	$clubs_all = $cfg['tm']->{'clubs'};
 	foreach ($clubs_all as $k => $v) {
 		if (strcmp($v->{'alias'}, $name) == 0) {
 			return $v;
@@ -378,6 +337,24 @@ function pdf_report_make($cfg, array $order_items) : string {
 	$tbl .= "</body>";
 	$tbl .= "</html>";
 	return $tbl;
+}
+
+function el(string $tag, string $content) : string {
+       return "<$tag>$content</$tag>";
+}
+
+function email_body_make() : string {
+       return el("html",
+         el("body",
+           el("h1", "Thank you for registering to Menlo Park Toastmasters")
+           .
+           el("p", "We're glad you decided to join us.")
+           .
+           el("span", "<hr>")
+           .
+           el("")
+         )
+       );
 }
 
 function version_num_verify(string $num_str) : int {

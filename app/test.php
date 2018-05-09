@@ -6,20 +6,13 @@ error_reporting(-1);
 require_once('lib.php');
 fail_on_error();
 
-print out_dir_name();
-print has_enough_disk_space();
-print make_random_fn();
-print make_out_fn();
+$tmp = load_json_file("config.json");
+assert($tmp != NULL);
 
-print_r(pre_check_all());
+$pseudo_post = load_json_file("../data/data.txt");
+assert($pseudo_post != NULL);
 
-json_file_save([1,2,3], "nums.json", -1);
-$j = load_json_file("nums.json");
-assert($j == [1,2,3]);
-$rc = unlink("nums.json");
-assert($rc == TRUE);
-
-$order = get_order("../data/data.txt");
+$order = get_order_from_post($pseudo_post);
 assert($order != NULL);
 
 $cfg = get_config();

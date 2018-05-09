@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 error_reporting(-1);
 
@@ -6,15 +7,24 @@ require_once('lib.php');
 
 fail_on_error();
 
-state_init();
-state_trans_from_to('save', 'genform.php');
+$debug = 0;
+
+//state_init();
+//state_trans_from_to('form', 'genform.php');
 
 // ---------------------------------------------------------
 
-$fn_in = $_SESSION['fn'];
-$order = get_order($fn_in);
+print_r($_POST);
+
+if ($debug) {
+	$j_str = json_encode($_POST, JSON_PRETTY_PRINT);
+	$fd = fopen("/tmp/tmp.txt", "w");
+	fwrite($fd, $j_str); //, count($j_str));
+	fclose($fd);
+}
+
+$order = get_order_from_post($_POST);
 assert($order != NULL);
-//print_r($order);
 
 $cfg = get_config();
 assert($cfg != NULL);
@@ -27,4 +37,5 @@ assert($order_items != NULL);
 
 $rep = pdf_report_make($cfg, $order_items);
 pdf_generate($rep);
+
 ?>
