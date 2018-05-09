@@ -5,23 +5,21 @@ all: app/config.json
 app/config.json: app/config_in.yml
 	./scripts/run_this_when_cfg_changed.rb app/config_in.yml  > app/config.json
 
-S:
+s:
 	qrcode-terminal http://${IP}:9091
 	(cd app && php -S ${IP}:9091)
-SL:
+sl:
 	qrcode-terminal http://localhost:9091
 	(cd app && php -S localhost:9091)
-
 d:
 	(cd deploy/ && ./runit.sh)
-s:
+sync:
 	(cd deploy/ && ./sync.sh)
 rs:
 	rsync -a root@mptm:/var/www/mptm.barvoy.com/ rapp/
-
+t:
+	(cd app && ./test.php)
 lint:
 	/bin/ls -1 */*.php | xargs -n 1 php -l
-
 clean:
 	rm -rf deploy/*.retry
-
