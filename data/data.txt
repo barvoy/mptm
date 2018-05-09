@@ -1,6 +1,5 @@
 {
-    "post": {
-        "firstname": "Adam",
+	"firstname": "Adam",
         "middlename": "John",
         "lastname": "Smith",
         "gender": "other",
@@ -23,6 +22,4 @@
         "tm_agree_promise": "on",
         "tm_agree_release": "on",
         "tm_agree_verif": "on"
-    },
-    "get": []
 }
