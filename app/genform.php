@@ -14,8 +14,6 @@ $debug = 0;
 
 // ---------------------------------------------------------
 
-print_r($_POST);
-
 if ($debug) {
 	$j_str = json_encode($_POST, JSON_PRETTY_PRINT);
 	$fd = fopen("/tmp/tmp.txt", "w");
