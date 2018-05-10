@@ -119,7 +119,7 @@ function tm_str_new_mem_ini_fee() : string {
 
 function tm_str_monthly(int $how_many_months, float $how_much_per_month, string $name = "Toastmasters International") : string {
 	assert($how_many_months >= 1 && $how_many_months <= 12);
-	return "$name: $how_many_months * " . tm_str_usd_amt($how_much_per_month);
+	return "$name: $how_many_months [months] x " . tm_str_usd_amt($how_much_per_month);
 }
 
 function assert_rate(float $rate) {
@@ -303,10 +303,10 @@ function html_report_make($cfg, array $order_items) : string {
 	$tbl .= "<h1>Menlo Park Toastmasters: Membership!</h1>";
 
 	$tbl .= "<p>";
-	$tbl .= "Menlo Park Toastmasters is a chapter of a bigger non-profit organization";
-	$tbl .= "called Toastmasters International (TMI). TMI provides us educational";
-	$tbl .= "materials and a structured program for out meetings, while Menlo Park";
-	$tbl .= "Toastmasters conducts the meetings and sticks to TMI protocol.";
+	$tbl .= "Menlo Park Toastmasters is a chapter of a bigger non-profit organization ";
+	$tbl .= "called Toastmasters International (TMI). TMI provides us educational ";
+	$tbl .= "materials and a structured program for out meetings, while Menlo Park ";
+	$tbl .= "Toastmasters conducts the meetings and sticks to TMI protocol. ";
 	$tbl .= "</p>";
 
 	$tbl .= "<h2>Pay online:</h2>";
@@ -314,6 +314,8 @@ function html_report_make($cfg, array $order_items) : string {
 	$tbl .= "You can pay with Debit/Credit Card or PayPal here:";
 	$tbl .= "</p>";
 	$tbl .= '<a href="'.$link.'"><h2>Click HERE to pay $' . $total . '</h2></a>';
+
+	// @todo: replace with TCPDF barcode so that working offline is possible
 
 //	$tbl .= "<h2>QR code</h2>";
 	$tbl .= "<p>To pay from iPhone, scan this image with iPhone camera:</p>";
@@ -325,6 +327,9 @@ function html_report_make($cfg, array $order_items) : string {
 
 	$tbl .= $table;
 
+	$tbl .= "<p>";
+	$tbl .= "This receipt should have been e-mailed to you in text and the PDF format";
+	$tbl .= "</p>";
 	$tbl .= "<p>";
 	$tbl .= "This receipt is only valid when presented with a proof of payment.";
 	$tbl .= "</p>";
