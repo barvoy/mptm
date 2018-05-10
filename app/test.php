@@ -6,10 +6,16 @@ error_reporting(-1);
 require_once('lib.php');
 fail_on_error();
 
+echo "# trying to load config.json\n";
 $tmp = load_json_file("config.json");
 assert($tmp != NULL);
 
-$pseudo_post = load_json_file("../data/data.txt");
+echo "# trying to load mail_conf.yml\n";
+$mail_conf = load_json_file("mail_conf.yml");
+assert($mail_conf != NULL);
+
+echo "# trying to load data.txt\n";
+$pseudo_post = load_json_file("sample_data/data.txt");
 assert($pseudo_post != NULL);
 
 $order = get_order_from_post($pseudo_post);

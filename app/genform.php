@@ -36,4 +36,6 @@ assert($order_items != NULL);
 $rep = pdf_report_make($cfg, $order_items);
 pdf_generate($rep);
 
+send_mail();
+
 ?>

@@ -5,6 +5,7 @@ error_reporting(-1);
 require_once('TCPDF-6.2.17/tcpdf.php');
 require_once('TCPDF-6.2.17/tcpdf_barcodes_2d.php');
 require_once('TCPDF-6.2.17/tcpdf_barcodes_1d.php');
+require_once('mail.php');
 
 function fail_on_err_handler($err_num, $err_str, $err_file, $err_line) {
 	throw new ErrorException("$err_num $err_str $err_file:$err_line");
@@ -287,7 +288,7 @@ function pdf_generate(string $html) {
 	// writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
 	$pdf->writeHTML($html, false, false, false, false, 'L');
 
-	$pdf->Output('receipt.pdf', 'I');
+	$pdf->Output('/tmp/receipt.pdf', 'FI');
 }
 
 function pdf_report_make($cfg, array $order_items) : string {

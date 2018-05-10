@@ -6,7 +6,7 @@ error_reporting(-1);
 require_once('lib.php');
 fail_on_error();
 
-$pseudo_post = load_json_file("../data/data.txt");
+$pseudo_post = load_json_file("sample_data/data.txt");
 assert($pseudo_post != NULL);
 
 $order = get_order_from_post($pseudo_post);
