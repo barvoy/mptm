@@ -18,7 +18,7 @@ assert($cfg != NULL);
 $order_items = make_order_items_array($cfg, $order);
 assert($order_items != NULL);
 
-$rep = html_report_make($cfg, $order_items);
+$rep = html_report_make($cfg, $order_items, $order);
 assert($rep != NULL);
 
 pdf_generate($rep);

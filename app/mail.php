@@ -7,7 +7,7 @@ require './PHPMailer/Exception.php';
 require './PHPMailer/PHPMailer.php';
 require './PHPMailer/SMTP.php';
 
-function email_make($cfg, string $body, string $altbody) {
+function email_make($cfg, $order, string $body, string $altbody) {
 	try {
 		$mail = new PHPMailer(true);                              // Passing `true` enables exceptions
 
@@ -25,8 +25,9 @@ function email_make($cfg, string $body, string $altbody) {
 			$cfg['smtp']->{'compose'}->{'from_name'}
 		);
 		$mail->addAddress(
-			$cfg['smtp']->{'compose'}->{'to_email'},
-			$cfg['smtp']->{'compose'}->{'to_name'}
+			$order['email']
+			//$cfg['smtp']->{'compose'}->{'to_email'},
+			//$cfg['smtp']->{'compose'}->{'to_name'}
 		);
 		$mail->addReplyTo(
 			$cfg['smtp']->{'compose'}->{'reply_to_email'},

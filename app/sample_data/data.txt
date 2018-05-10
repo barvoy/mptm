@@ -8,7 +8,7 @@
         "zipcode": "12123",
         "city": "The City",
         "state": "California",
-        "email": "adam@smith.org",
+	"email": "wkoszek+testing@gmail.com",
         "mptm_new_member": "1",
         "mptm_start_month": "may",
         "mpta_ca_tax": "1.55",

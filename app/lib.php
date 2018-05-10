@@ -291,7 +291,7 @@ function pdf_generate(string $html) {
 	$pdf->Output('/tmp/receipt.pdf', 'FI');
 }
 
-function html_report_make($cfg, array $order_items) : string {
+function html_report_make($cfg, array $order_items, $order) : string {
 	$total_raw = $order_items[count($order_items) - 1][2];
 	$total = sprintf("%2.2f", $total_raw);
 	$link = "https://paypal.me/mptm/$total";
@@ -340,6 +340,14 @@ function html_report_make($cfg, array $order_items) : string {
 	$tbl .= 'E-mail <a href="mailto:treasurer@menloparktm.org">treasurer@menloparktm.org</a> in case you have any questions.';
 	$tbl .= "</p>";
 
+
+
+	$tbl .= "<h2>You've applied with data</h2>";
+	$tbl .= "<pre>";
+	$tbl .= print_r($order, TRUE);
+	$tbl .= "</pre>";
+
+
 	$tbl .= "</body>";
 	$tbl .= "</html>";
 	return $tbl;
@@ -379,12 +387,12 @@ function email_with_form_and_pdf(array $raw_post) {
 	// @todo: tools for php static analysis
 	// @todo: php switch for strict code checking
 
-	$html_rep = html_report_make($cfg, $order_items);
+	$html_rep = html_report_make($cfg, $order_items, $order);
 	pdf_generate($html_rep);
 
 	$mail_cfg = load_json_file('mail_conf.js');
 	assert($mail_cfg != NULL);
-	$mail = email_make($mail_cfg, $html_rep, "PDF attached");
+	$mail = email_make($mail_cfg, $order, $html_rep, "PDF attached");
 
 	return $mail;
 }
