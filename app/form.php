@@ -128,6 +128,16 @@ if (TRUE) {
 			<input required type="email" id="email" name="email" placeholder="Your e-mail..." size=20 />
 			<br />
 		</div>
+		<br />
+
+		<div class="lineitem">
+			<label for="phone">Phone number</label>
+			<span class="req">*</span>
+			<br />
+			<input required type="text" id="phone" name="phone" placeholder="Phone number..." width="100%" />
+		</div>
+		<br />
+
 	</fieldset>
 
 
