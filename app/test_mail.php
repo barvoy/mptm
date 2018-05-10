@@ -7,17 +7,13 @@ require_once('lib.php');
 require_once('mail.php');
 fail_on_error();
 
-//send_email();
+// Imitate _POST request data.
+$pseudo_post = load_json_file("sample_data/data.txt");
+assert($pseudo_post != NULL);
 
-$body = "test";
-$altbody = "alt test";
+$mail = email_with_form_and_pdf($pseudo_post);
+assert($mail != NULL);
 
-$cfg = load_json_file('mail_conf.js');
-
-print_r($cfg);
-
-
-$m = email_make($cfg, $body, $altbody);
-print_r($m);
+email_send($mail);
 
 ?>

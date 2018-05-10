@@ -21,22 +21,9 @@ if ($debug) {
 	fclose($fd);
 }
 
-$order = get_order_from_post($_POST);
-assert($order != NULL);
 
-$cfg = get_config();
-assert($cfg != NULL);
+$mail = email_with_form_and_pdf($_POST);
 
-$order_items = make_order_items_array($cfg, $order);
-assert($order_items != NULL);
-
-// @todo: tools for php static analysis
-// @todo: php switch for strict code checking
-
-$html_rep = html_report_make($cfg, $order_items);
-pdf_generate($html_rep);
-
-$mail = email_make($html_rep);
 email_send($mail);
 
 ?>

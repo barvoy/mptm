@@ -366,4 +366,27 @@ function php_version_int() : int {
 	return $vint;
 }
 
+function email_with_form_and_pdf(array $raw_post) {
+	$order = get_order_from_post($raw_post);
+	assert($order != NULL);
+
+	$cfg = get_config();
+	assert($cfg != NULL);
+
+	$order_items = make_order_items_array($cfg, $order);
+	assert($order_items != NULL);
+
+	// @todo: tools for php static analysis
+	// @todo: php switch for strict code checking
+
+	$html_rep = html_report_make($cfg, $order_items);
+	pdf_generate($html_rep);
+
+	$mail_cfg = load_json_file('mail_conf.js');
+	assert($mail_cfg != NULL);
+	$mail = email_make($mail_cfg, $html_rep, "PDF attached");
+
+	return $mail;
+}
+
 ?>
