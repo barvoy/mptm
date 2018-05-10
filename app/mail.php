@@ -48,7 +48,7 @@ function email_make($cfg, string $body, string $altbody) {
 	return $mail;
 }
 
-function send_mail($mail) {
+function email_send($mail) {
 	try {
 		$mail->send();
 		echo 'Message has been sent';

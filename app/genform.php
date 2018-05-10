@@ -33,9 +33,10 @@ assert($order_items != NULL);
 // @todo: tools for php static analysis
 // @todo: php switch for strict code checking
 
-$rep = pdf_report_make($cfg, $order_items);
-pdf_generate($rep);
+$html_rep = html_report_make($cfg, $order_items);
+pdf_generate($html_rep);
 
-send_mail();
+$mail = email_make($html_rep);
+email_send($mail);
 
 ?>

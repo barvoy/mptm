@@ -291,7 +291,7 @@ function pdf_generate(string $html) {
 	$pdf->Output('/tmp/receipt.pdf', 'FI');
 }
 
-function pdf_report_make($cfg, array $order_items) : string {
+function html_report_make($cfg, array $order_items) : string {
 	$total_raw = $order_items[count($order_items) - 1][2];
 	$total = sprintf("%2.2f", $total_raw);
 	$link = "https://paypal.me/mptm/$total";
@@ -338,24 +338,6 @@ function pdf_report_make($cfg, array $order_items) : string {
 	$tbl .= "</body>";
 	$tbl .= "</html>";
 	return $tbl;
-}
-
-function el(string $tag, string $content) : string {
-       return "<$tag>$content</$tag>";
-}
-
-function email_body_make() : string {
-       return el("html",
-         el("body",
-           el("h1", "Thank you for registering to Menlo Park Toastmasters")
-           .
-           el("p", "We're glad you decided to join us.")
-           .
-           el("span", "<hr>")
-           .
-           el("")
-         )
-       );
 }
 
 function version_num_verify(string $num_str) : int {
