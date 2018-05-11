@@ -20,21 +20,6 @@ if (TRUE) {
 <body>
 
 	<h1>Join Menlo Park Toastmasters!</h1>
-	<!--
-	<p>
-		Join our club in 2 easy steps:
-		<ol>
-			<li>
-				Fill the form and pay membership fees (below)
-			</li>
-			<li>
-				Join
-				<a target="_blank" href="https://groups.google.com/forum/#!forum/mptm/join">our club's mailing list</a>.
-				This is how we send speech details and our schedule.
-			</li>
-		</ol>
-	</p>
-	-->
 
 	<span class="req">*</span> fields are required
 	<br />
@@ -206,8 +191,6 @@ if (TRUE) {
 			<input type="text" name="trans_memb_number" placeholder="Member number" />
 			<br />
 		</span>
-
-
 	</fieldset>
 
 	<fieldset hidden>
@@ -292,33 +275,7 @@ if (TRUE) {
 
 	</form>
 
-<script>
-
-function loadJSON(callback) {
-	var xobj = new XMLHttpRequest();
-	xobj.overrideMimeType("application/json");
-	xobj.open('GET', 'club.php?alias=mptm', true);
-	xobj.onreadystatechange = function() {
-		if (xobj.readyState == 4 && xobj.status == "200") {
-			console.log("everything ok!");
-			callback(xobj.responseText);
-		}
-	}
-	xobj.send(null);
-}
-
-club_info = null;
-
-loadJSON(function(response) {
-	console.log(response);
-	club_info = JSON.parse(response);
-	mptm_calc_dues(true);	// call it once to update a "checked" mark near the current month
-});
-
-</script>
 <script src="tm.js"></script>
-
-
 
 <hr />
 <small>

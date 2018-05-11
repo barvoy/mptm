@@ -1,5 +1,26 @@
 'use strict';
 
+function loadJSON(callback) {
+	var xobj = new XMLHttpRequest();
+	xobj.overrideMimeType("application/json");
+	xobj.open('GET', 'club.php?alias=mptm', true);
+	xobj.onreadystatechange = function() {
+		if (xobj.readyState == 4 && xobj.status == "200") {
+			console.log("everything ok!");
+			callback(xobj.responseText);
+		}
+	}
+	xobj.send(null);
+}
+
+club_info = null;
+
+loadJSON(function(response) {
+	console.log(response);
+	club_info = JSON.parse(response);
+	mptm_calc_dues(true);	// call it once to update a "checked" mark near the current month
+});
+
 function month_names_short() {
 	return ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 }
