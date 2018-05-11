@@ -6,10 +6,10 @@ error_reporting(-1);
 include_once('lib.php');
 fail_on_error();
 // @todo: uncomment after development
-if (TRUE) {
-	state_init();
-	state_trans_from_to("init", "form");
-}
+//if (TRUE) {
+//	state_init();
+//	state_trans_from_to("init", "form");
+//}
 ?>
 
 <html>
@@ -134,9 +134,30 @@ if (TRUE) {
 		<p>
 			<b>Are you a new member?</b>
 			<br />
-			<input type="radio" class="mptm_new_member_dues" name="mptm_new_member" value="1" checked="true" />yes ($20, initiation fee)<br/>
-			<input type="radio" class="mptm_new_member_dues" name="mptm_new_member" value="0" />no &nbsp;($0, renewal/reinstating)<br/>
+			<input type="radio" class="mptm_membership_type" name="membership_type" value="new" checked>New</input><br />
+			<input type="radio" class="mptm_membership_type" name="membership_type" value="reinstated">Reinstated (break in membership)</input><br />
+			<input type="radio" class="mptm_membership_type" name="membership_type" value="renewing">Renewing (no break in membership)</input><br />
+			<input type="radio" class="mptm_membership_type" name="membership_type" value="dual">Dual</input><br />
+			<input type="radio" class="mptm_membership_type" name="membership_type" value="transfer">Transfer</input><br />
 		</p>
+
+		<span id="membership_type_transfer_data" hidden>
+			<h3>Transferring: provide details here</h3>
+			Previous club name:
+			<span class="req">*</span>
+			<input type="text" name="trans_prev_club_name" placeholder="Previous club name" />
+			<br />
+
+			Previous club number:
+			<span class="req">*</span>
+			<input type="text" name="trans_prev_club_num" placeholder="Previous club number" />
+			<br />
+
+			Member number:
+			<span class="req">*</span>
+			<input type="text" name="trans_memb_number" placeholder="Member number" />
+			<br />
+		</span>
 
 		<p>
 			<b>Month you'd like to start your membership</b><br />
@@ -160,52 +181,6 @@ if (TRUE) {
 		</p>
 	</fieldset>
 
-
-	<fieldset>
-		<legend>
-			<span class="req">*</span>
-			Membership Type
-		</legend>
-
-		<input type="radio" name="membership_type" class="membership_type" value="new" checked>New</input><br />
-		<input type="radio" name="membership_type" class="membership_type" value="reinstated">Reinstated (break in membership)</input><br />
-		<input type="radio" name="membership_type" class="membership_type" value="renewing">Renewing (no break in membership)</input><br />
-		<input type="radio" name="membership_type" class="membership_type" value="dual">Dual</input><br />
-		<input type="radio" name="membership_type" class="membership_type" value="transfer">Transfer</input><br />
-		<br />
-
-		<span id="membership_type_transfer_data" hidden>
-			<h3>Transferring: provide details here</h3>
-			Previous club name:
-			<span class="req">*</span>
-			<input type="text" name="trans_prev_club_name" placeholder="Previous club name" />
-			<br />
-
-			Previous club number:
-			<span class="req">*</span>
-			<input type="text" name="trans_prev_club_num" placeholder="Previous club number" />
-			<br />
-
-			Member number:
-			<span class="req">*</span>
-			<input type="text" name="trans_memb_number" placeholder="Member number" />
-			<br />
-		</span>
-	</fieldset>
-
-	<fieldset hidden>
-		<legend>Previous Club information</legend>
-
-		<label for="club_city">Club city:</label>
-		<input type="text" id="club_city" name="club_city" value="Menlo Park" size=30 />
-		<br />
-
-		<label for="club_name">Club name:</label>
-		<input type="text" id="club_name" name="club_name" value="Menlo Park Toastmasters" />
-
-		<label for="club_number">Club number:</label>
-		<input type="text" id="club_number" name="club_number" value="1372" />
-	</fieldset>
 
 	<fieldset>
 		<legend>
@@ -276,6 +251,8 @@ if (TRUE) {
 	</form>
 
 <script src="tm.js"></script>
+<script>
+</script>
 
 <hr />
 <small>
