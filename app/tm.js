@@ -13,8 +13,7 @@ function loadJSON(callback) {
 	xobj.send(null);
 }
 
-club_info = null;
-
+var club_info = null;
 loadJSON(function(response) {
 	console.log(response);
 	club_info = JSON.parse(response);
@@ -26,6 +25,9 @@ function month_names_short() {
 }
 
 function mptm_calc_dues(should_update_month) {
+	if (club_info === undefined) {
+		return;
+	}
 	const state_tax_rate_mul = parseFloat(club_info['fees']['ca_tax_rate_mul']);
 	const paypal_rate_mul    = parseFloat(club_info['fees']['paypal_rate_mul']);
 	const mptm_monthly_fee   = parseFloat(club_info['fees']['club_monthly']);
@@ -39,7 +41,7 @@ function mptm_calc_dues(should_update_month) {
 	const toggle_month = (cur_date.getMonth() + month_maybe_inc) % 12;
 
 	let mptm_months_el = document.getElementsByClassName('mptm_months');
-	let mptm_new_member_dues = document.getElementsByClassName('mptm_new_member_dues');
+	let mptm_membership_type_el = document.getElementsByClassName('mptm_membership_type');
 
 	console.assert(mptm_months_el.length == 12, "internal error: we don't have 12 months");
 	console.assert(toggle_month >= 0 && toggle_month <= 11, "we have a wrong month!");
@@ -80,10 +82,11 @@ function mptm_calc_dues(should_update_month) {
 		}
 		wi += 1;
 	}
+	
 	let is_new_member = null;
-	for (let mptm_member_dues of mptm_new_member_dues) {
-		if (mptm_member_dues.checked) {
-			is_new_member = parseInt(mptm_member_dues.value);
+	for (let el of mptm_membership_type_el) {
+		if (el.value == "new") {
+			is_new_member = 1;
 		}
 	}
 	console.assert(how_many_months != null, "ops1");
@@ -130,14 +133,19 @@ function mptm_calc_dues(should_update_month) {
 	//console.log(how_many_months, is_new_member);
 }
 
-let r1_el = document.getElementsByClassName('mptm_new_member_dues');
+
+let r1_el = document.getElementsByClassName('mptm_membership_type');
 let r2_el = document.getElementsByClassName('mptm_months');
+
+console.assert(r1_el != null);
+console.assert(r2_el != null);
 
 for (let r_el of r1_el) {
 	r_el.addEventListener('click', function() {
 		mptm_calc_dues(false);
 	});
 }
+
 for (let r_el of r2_el) {
 	r_el.addEventListener('click', function() {
 		mptm_calc_dues(false);
@@ -145,13 +153,12 @@ for (let r_el of r2_el) {
 }
 
 let mem_type_trans_data_el = document.getElementById('membership_type_transfer_data');
-let memb_types_el = document.getElementsByClassName('membership_type');
+let memb_types_el = document.getElementsByClassName('mptm_membership_type');
 for (let memb_type_el of memb_types_el) {
-	console.log(memb_type_el);
+	console.log('>>>>', memb_type_el);
 	memb_type_el.addEventListener('change', function (evt) {
-		console.log(evt);
+		console.log('checking here', evt);
 		if (evt.srcElement.value == 'transfer') {
-			//evt.srcElement.hidden = !evt.srcElement.hidden;
 			mem_type_trans_data_el.hidden = !mem_type_trans_data_el.hidden;
 		} else {
 			mem_type_trans_data_el.hidden = true;
