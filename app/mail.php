@@ -38,6 +38,9 @@ function email_make($cfg, $order, string $body, string $altbody) {
 			$cfg['smtp']->{'compose'}->{'path'},
 			"mptm_new_member.pdf"
 		);
+		$mail->addAttachment(
+			'mptm_invite.ics'
+		);
 
 		$mail->isHTML(true);                                  // Set email format to HTML
 		$mail->Subject = '[MPTM] Welcome to Menlo Park Toastmasters!';
