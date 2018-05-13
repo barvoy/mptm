@@ -4,7 +4,7 @@ span.req     { color: red; }
 input        { background-color: lightyellow; }
 legend       { yellow; border: dotted 1px lightgray ;}
 .req_mark    { background-color: lightyellow; }
-
+.expl        { color: darkgray; }
 
 @media only screen and (max-device-width: 587px) {
     body {

@@ -134,11 +134,35 @@ if (TRUE) {
 		<p>
 			<b>Are you a new member?</b>
 			<br />
-			<input type="radio" class="mptm_membership_type" name="membership_type" value="new" checked>New</input><br />
-			<input type="radio" class="mptm_membership_type" name="membership_type" value="reinstated">Reinstated (break in membership)</input><br />
-			<input type="radio" class="mptm_membership_type" name="membership_type" value="renewing">Renewing (no break in membership)</input><br />
-			<input type="radio" class="mptm_membership_type" name="membership_type" value="dual">Dual</input><br />
-			<input type="radio" class="mptm_membership_type" name="membership_type" value="transfer">Transfer</input><br />
+			<input type="radio" class="mptm_membership_type" name="membership_type" value="new" checked>New</input>
+			<br />
+			<span class="expl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(you've never been a member)</span>
+			<br />
+			<br />
+
+			<input type="radio" class="mptm_membership_type" name="membership_type" value="reinstated">Reinstated</input>
+			<br />
+			<span class="expl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(you were a member before, and you're returning after a break</span>
+			<br />
+			<br />
+
+			<input type="radio" class="mptm_membership_type" name="membership_type" value="renewing">Renewing</input>
+			<br />
+			<span class="expl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(you're renewing your active membership))</span>
+			<br />
+			<br />
+
+			<input type="radio" class="mptm_membership_type" name="membership_type" value="dual">Dual</input>
+			<br />
+			<span class="expl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(you're a member of other Toastmasters club already)</span>
+			<br />
+			<br />
+
+			<input type="radio" class="mptm_membership_type" name="membership_type" value="transfer">Transfer</input>
+			<br />
+			<span class="expl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(you're a member of other Toastmasters club, and you want to transfer to us)</span>
+			<br />
+			<br />
 		</p>
 
 		<span id="membership_type_transfer_data" hidden>
