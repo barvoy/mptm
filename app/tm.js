@@ -87,8 +87,6 @@ function mptm_calc_dues(should_update_month) {
 	for (let el of mptm_membership_type_el) {
 		if (el.value == "new" && el.checked) {
 			is_new_member = 1;
-		} else {
-			is_new_member = 0;
 		}
 	}
 	console.assert(how_many_months != null, "ops1");
