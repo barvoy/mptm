@@ -6,10 +6,10 @@ error_reporting(-1);
 include_once('lib.php');
 fail_on_error();
 // @todo: uncomment after development
-//if (TRUE) {
-//	state_init();
-//	state_trans_from_to("init", "form");
-//}
+if (TRUE) {
+	state_init();
+	state_trans_from_to("init", "form");
+}
 ?>
 
 <html>

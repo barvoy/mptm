@@ -151,9 +151,24 @@ function month_name_to_idx(string $name) : int {
 	return (int)$ret;
 }
 
+// mo	which_mo	pro-rated in some months
+// jan	0		3
+// feb	1		2
+// mar	2		1
+// apr	3		6
+// may	4		5
+// june	5		4
+// july	6		3
+// aug	7		2
+// sep	8		1
+// oct	9		6
+// nov	10		5
+// dec	11		4
+
 function make_order_items_array(array $cfg, array $order) : array {
 	$order_memb_type = $order['membership_type'];
-	$order_memb_start_mo = 1 + month_name_to_idx($order['mptm_start_month']);
+	$midx = month_name_to_idx($order['mptm_start_month']);
+	$how_many_months = [3,2,1,6,5,4,3,2,1,6,5,4][$midx];
 
 	$club_cfg = $cfg['tm']->{'clubs'}[0];
 
@@ -170,14 +185,14 @@ function make_order_items_array(array $cfg, array $order) : array {
 
 	// b. we charge TMI's per-month fee
 	$tmi_mo_cost = $club_cfg->{'fees'}->{'tmi_monthly'};
-	$amt = $order_memb_start_mo * $tmi_mo_cost;
-	array_push($item_all, [ $item_num, tm_str_monthly($order_memb_start_mo, $tmi_mo_cost), $amt ]);
+	$amt = $how_many_months * $tmi_mo_cost;
+	array_push($item_all, [ $item_num, tm_str_monthly($how_many_months, $tmi_mo_cost), $amt ]);
 	$item_num += 1;
 
 	// c. we charge club's per-month fee
 	$club_mo_cost = $club_cfg->{'fees'}->{'club_monthly'};
-	$amt = $order_memb_start_mo * $club_mo_cost;
-	array_push($item_all, [ $item_num, tm_str_monthly($order_memb_start_mo, $club_mo_cost, "Menlo Park Toastmasters"), $amt ]);
+	$amt = $how_many_months * $club_mo_cost;
+	array_push($item_all, [ $item_num, tm_str_monthly($how_many_months, $club_mo_cost, "Menlo Park Toastmasters"), $amt ]);
 	$item_num += 1;
 
 	// add itemized charges here
@@ -319,7 +334,7 @@ function html_report_make($cfg, array $order_items, $order) : string {
 
 //	$tbl .= "<h2>QR code</h2>";
 	$tbl .= "<p>To pay from iPhone, scan this image with iPhone camera:</p>";
-	$tbl .= '<img src="https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$link.'&choe=UTF-8" />';
+//	$tbl .= '<img src="https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$link.'&choe=UTF-8" />';
 
 	$tbl .= "<p></p>";
 
