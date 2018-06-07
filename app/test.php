@@ -11,7 +11,7 @@ $tmp = load_json_file("config.json");
 assert($tmp != NULL);
 
 echo "# trying to load mail_conf.yml\n";
-$mail_conf = load_json_file("mail_conf.yml");
+$mail_conf = load_yaml_file("mail_conf.yml");
 assert($mail_conf != NULL);
 
 echo "# trying to load data.txt\n";
@@ -37,7 +37,7 @@ echo "# ------ club search. should get NULL";
 print_r(club_get_by_name($cfg, 'bleh') == NULL);
 echo "\n";
 
-$rep = pdf_report_make($cfg, $order_items);
+$rep = html_report_make($cfg, $order_items, $order);
 echo $rep;
 
 ?>

@@ -6,6 +6,7 @@ require_once('TCPDF-6.2.17/tcpdf.php');
 require_once('TCPDF-6.2.17/tcpdf_barcodes_2d.php');
 require_once('TCPDF-6.2.17/tcpdf_barcodes_1d.php');
 require_once('mail.php');
+require_once('_YAML/Spyc.php');
 
 function fail_on_err_handler($err_num, $err_str, $err_file, $err_line) {
 	throw new ErrorException("$err_num $err_str $err_file:$err_line");
@@ -49,6 +50,11 @@ function load_json_file(string $fn) : array {
 
 	$arr = get_object_vars($obj);
 	return $arr;
+}
+
+function load_yaml_file(string $fn) : array {
+	$array = Spyc::YAMLLoad($fn);
+	return $array;
 }
 
 function get_config() {
