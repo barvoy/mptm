@@ -23,7 +23,9 @@ if ($debug) {
 
 
 $mail = email_with_form_and_pdf($_POST);
-
 email_send($mail);
+
+$mail2 = email_with_reminder($_POST);
+email_send($mail2);
 
 ?>

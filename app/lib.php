@@ -409,11 +409,44 @@ function email_with_form_and_pdf(array $raw_post) {
 	// @todo: php switch for strict code checking
 
 	$html_rep = html_report_make($cfg, $order_items, $order);
+	// @todo: pdf_generate should take a config object
 	pdf_generate($html_rep);
 
 	$mail_cfg = load_json_file('mail_conf.js');
 	assert($mail_cfg != NULL);
 	$mail = email_make($mail_cfg, $order, $html_rep, "PDF attached");
+
+	return $mail;
+}
+
+function html_mailing_list_reminder_make() : string {
+	$text = "";
+	$text .= "Every week we send out an agenda for our meetings ";
+	$text .= "Please sign-up for out mailing list to receive it:";
+	$text .= "<br>";
+	$text .= "https://groups.google.com/forum/#!forum/mptm/join";
+	$text .= "<br>";
+	$text .= "This is a low-volume list; roughtly 1-2 emails a week";
+
+	return $text;
+}
+
+function email_with_reminder(array $raw_post) {
+	$order = get_order_from_post($raw_post);
+	assert($order != NULL);
+
+	$cfg = get_config();
+	assert($cfg != NULL);
+
+	$order_items = make_order_items_array($cfg, $order);
+	assert($order_items != NULL);
+
+	$html_rep = html_mailing_list_reminder_make();
+	pdf_generate($html_rep);
+
+	$mail_cfg = load_json_file('mail_conf.js');
+	assert($mail_cfg != NULL);
+	$mail = email_make_reminder($mail_cfg, $order, $html_rep, "Reminder attached");
 
 	return $mail;
 }

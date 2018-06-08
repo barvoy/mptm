@@ -13,6 +13,8 @@ assert($tmp != NULL);
 echo "# trying to load mail_conf.yml\n";
 $mail_conf = load_yaml_file("mail_conf.yml");
 assert($mail_conf != NULL);
+$conf = load_yaml_file("config_in.yml");
+assert($conf != NULL);
 
 echo "# trying to load data.txt\n";
 $pseudo_post = load_json_file("sample_data/data.txt");
