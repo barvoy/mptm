@@ -1,8 +1,16 @@
 IP=$(shell ifconfig en0 | grep inet | grep -v inet6 | awk '{ print $$2 }')
 
-all: app/config.json
+usage:
+	@echo "make refresh -- regen config.json file"
+	@echo "make s       -- run a server on a public IP"
+	@echo "make sl      -- run a local server on localhost"
+	@echo "make d       -- run unit tests"
+	@echo "make sync    -- deploy to prod"
+	@echo "make rs      -- reverse sync to rapp/"
+	@echo "make lint    -- check syntax"
+	@echo "make clean   -- clean stuff"
 
-app/config.json: app/config_in.yml
+refresh:
 	./scripts/run_this_when_cfg_changed.rb app/config_in.yml  > app/config.json
 
 s:
