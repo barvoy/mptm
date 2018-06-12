@@ -7,7 +7,7 @@ require_once('lib.php');
 fail_on_error();
 
 echo "# trying to load config.json\n";
-$tmp = load_json_file("config.json");
+$tmp = load_json_file("test-js.js");
 assert($tmp != NULL);
 
 echo "# trying to load mail_conf.yml\n";
@@ -20,15 +20,19 @@ echo "# trying to load data.txt\n";
 $pseudo_post = load_json_file("sample_data/data.txt");
 assert($pseudo_post != NULL);
 
+echo "# get order from post\n";
 $order = get_order_from_post($pseudo_post);
 assert($order != NULL);
 
+echo "# get config\n";
 $cfg = get_config();
 assert($cfg != NULL);
 
+echo "# make order items\n";
 $order_items = make_order_items_array($cfg, $order);
 assert($order_items != NULL);
 
+echo "# make full table\n";
 print make_full_table($order_items);
 
 // @todo: commit edu_php
