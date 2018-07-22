@@ -9,8 +9,8 @@ fail_on_error();
 
 $debug = 0;
 
-//state_init();
-//state_trans_from_to('form', 'genform.php');
+state_init();
+state_trans_from_to('form', 'genform.php');
 
 // ---------------------------------------------------------
 

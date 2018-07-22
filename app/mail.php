@@ -14,21 +14,21 @@ function email_make_base($cfg, $order, string $body, string $altbody) {
 		//Server settings
 		$mail->SMTPDebug = 2;                                 // Enable verbose debug output
 		$mail->isSMTP();                                      // Set mailer to use SMTP
-		$mail->Host = $cfg['smtp']->{'server'}->{'host'};
+		$mail->Host = $cfg['smtp']{'server'}{'host'};
 		$mail->SMTPAuth = true;                               // Enable SMTP authentication
-		$mail->Username = $cfg['smtp']->{'server'}->{'username'};
-		$mail->Password = $cfg['smtp']->{'server'}->{'password'};
+		$mail->Username = $cfg['smtp']{'server'}{'username'};
+		$mail->Password = $cfg['smtp']{'server'}{'password'};
 		$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-		$mail->Port = $cfg['smtp']->{'server'}->{'port'};
+		$mail->Port = $cfg['smtp']{'server'}{'port'};
 		$mail->setFrom(
-			$cfg['smtp']->{'compose'}->{'from_email'},
-			$cfg['smtp']->{'compose'}->{'from_name'}
+			$cfg['smtp']{'compose'}{'from_email'},
+			$cfg['smtp']{'compose'}{'from_name'}
 		);
 		$mail->addReplyTo(
-			$cfg['smtp']->{'compose'}->{'reply_to_email'},
-			$cfg['smtp']->{'compose'}->{'reply_to_name'}
+			$cfg['smtp']{'compose'}{'reply_to_email'},
+			$cfg['smtp']{'compose'}{'reply_to_name'}
 		);
-		$mail->addBCC($cfg['smtp']->{'compose'}->{'bcc'});
+		$mail->addBCC($cfg['smtp']{'compose'}{'bcc'});
 
 		$mail->isHTML(true);                                  // Set email format to HTML
 		$mail->Body    = $body;
@@ -45,7 +45,7 @@ function email_make_welcome($cfg, $order, string $body, string $altbody) {
 		$order['email']
 	);
 	$mail->addAttachment(
-		$cfg['smtp']->{'compose'}->{'path'},
+		$cfg['smtp']{'compose'}{'path'},
 		"mptm_new_member.pdf"
 	);
 	$mail->addAttachment(

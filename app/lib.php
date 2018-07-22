@@ -58,7 +58,7 @@ function load_yaml_file(string $fn) : array {
 }
 
 function get_config() {
-	return load_json_file("config.json");
+	return load_yaml_file("config_in.yml");
 }
 
 
@@ -176,7 +176,7 @@ function make_order_items_array(array $cfg, array $order) : array {
 	$midx = month_name_to_idx($order['mptm_start_month']);
 	$how_many_months = [3,2,1,6,5,4,3,2,1,6,5,4][$midx];
 
-	$club_cfg = $cfg['tm']->{'clubs'}[0];
+	$club_cfg = $cfg['tm']['clubs'][0];
 
 	$item_all = [];
 	$item_num = 1;
@@ -184,19 +184,19 @@ function make_order_items_array(array $cfg, array $order) : array {
 	// a. For new members, we need to charge the initiation fee
 	if ($order_memb_type == "new") {
 		//echo ">>> new membership\n";
-		$amt = $club_cfg->{'fees'}->{'init_onetime'};
+		$amt = $club_cfg{'fees'}{'init_onetime'};
 		array_push($item_all, [ $item_num, tm_str_new_mem_ini_fee(), $amt ]);
 		$item_num += 1;
 	}
 
 	// b. we charge TMI's per-month fee
-	$tmi_mo_cost = $club_cfg->{'fees'}->{'tmi_monthly'};
+	$tmi_mo_cost = (float)$club_cfg{'fees'}{'tmi_monthly'};
 	$amt = $how_many_months * $tmi_mo_cost;
 	array_push($item_all, [ $item_num, tm_str_monthly($how_many_months, $tmi_mo_cost), $amt ]);
 	$item_num += 1;
 
 	// c. we charge club's per-month fee
-	$club_mo_cost = $club_cfg->{'fees'}->{'club_monthly'};
+	$club_mo_cost = (float)$club_cfg{'fees'}{'club_monthly'};
 	$amt = $how_many_months * $club_mo_cost;
 	array_push($item_all, [ $item_num, tm_str_monthly($how_many_months, $club_mo_cost, "Menlo Park Toastmasters"), $amt ]);
 	$item_num += 1;
@@ -204,7 +204,7 @@ function make_order_items_array(array $cfg, array $order) : array {
 	// add itemized charges here
 
 	// x. charge CA tax
-	$ca_tax_rate = $club_cfg->{'fees'}->{'ca_tax_rate_mul'};
+	$ca_tax_rate = (float)$club_cfg{'fees'}{'ca_tax_rate_mul'};
 	$total_so_far = 0;
 	foreach ($item_all as $arr_idx => $arr) {
 		$total_so_far += $arr[2];
@@ -214,7 +214,7 @@ function make_order_items_array(array $cfg, array $order) : array {
 	$item_num += 1;
 
 	// y. charge PayPal rate
-	$paypal_rate = $club_cfg->{'fees'}->{'paypal_rate_mul'};
+	$paypal_rate = (float)$club_cfg{'fees'}{'paypal_rate_mul'};
 	$total_so_far = 0;
 	foreach ($item_all as $arr_idx => $arr) {
 		$total_so_far += $arr[2];
@@ -253,9 +253,9 @@ function make_full_table($order_items) : string {
 }
 
 function club_get_by_name($cfg, string $name) {
-	$clubs_all = $cfg['tm']->{'clubs'};
+	$clubs_all = $cfg{'tm'}{'clubs'};
 	foreach ($clubs_all as $k => $v) {
-		if (strcmp($v->{'alias'}, $name) == 0) {
+		if (strcmp($v{'alias'}, $name) == 0) {
 			return $v;
 		}
 	}
@@ -412,21 +412,23 @@ function email_with_form_and_pdf(array $raw_post) {
 	// @todo: pdf_generate should take a config object
 	pdf_generate($html_rep);
 
-	$mail_cfg = load_json_file('mail_conf.js');
+	$mail_cfg = load_yaml_file('mail_conf.yml');
 	assert($mail_cfg != NULL);
-	$mail = email_make($mail_cfg, $order, $html_rep, "PDF attached");
+	$mail = email_make_welcome($mail_cfg, $order, $html_rep, "PDF attached");
 
 	return $mail;
 }
 
 function html_mailing_list_reminder_make() : string {
 	$text = "";
+	$text .= "<p>";
 	$text .= "Every week we send out an agenda for our meetings ";
 	$text .= "Please sign-up for out mailing list to receive it:";
 	$text .= "<br>";
 	$text .= "https://groups.google.com/forum/#!forum/mptm/join";
 	$text .= "<br>";
 	$text .= "This is a low-volume list; roughtly 1-2 emails a week";
+	$text .= "</p>";
 
 	return $text;
 }
@@ -442,9 +444,8 @@ function email_with_reminder(array $raw_post) {
 	assert($order_items != NULL);
 
 	$html_rep = html_mailing_list_reminder_make();
-	pdf_generate($html_rep);
 
-	$mail_cfg = load_json_file('mail_conf.js');
+	$mail_cfg = load_yaml_file('mail_conf.yml');
 	assert($mail_cfg != NULL);
 	$mail = email_make_reminder($mail_cfg, $order, $html_rep, "Reminder attached");
 

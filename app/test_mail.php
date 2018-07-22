@@ -13,7 +13,10 @@ assert($pseudo_post != NULL);
 
 $mail = email_with_form_and_pdf($pseudo_post);
 assert($mail != NULL);
-
 email_send($mail);
+
+$mail2 = email_with_reminder($pseudo_post);
+assert($mail2 != NULL);
+email_send($mail2);
 
 ?>
