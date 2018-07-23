@@ -2,15 +2,15 @@
 	font-family: georgia;
 }
 html {
-	border-top: solid 10px darkred; padding: 0px; margin: 0px;
+	border-top: solid 10px darkred;
 }
 body {
 	font-family: sans-serif;
 	width: 50%; 
 	margin-top: 3%;
-	margin-left: 10%;
-	margin-right: 10%;
 	line-height: 150%;
+	padding-left: 5%;
+	margin-right: 5%;
 }
 h1,h2,h3,h4,h5 {
 	font-family: helvetica;
@@ -28,11 +28,9 @@ ol	 	{ padding-left: 4%; }
 @media only screen and (max-device-width: 587px) {
     body {
 	font-size: 220%;
-	width: 100%;
+	width: 90%;
     }
     p {
-	margin-left: 10px;
-	margin-right: 10px;
 	line-height: 200%;
     }
     input {
