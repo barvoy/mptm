@@ -1,2 +1,0 @@
-all:
-	./sync.rb
