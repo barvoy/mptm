@@ -29,6 +29,7 @@ function email_make_base($cfg, $order, string $body, string $altbody) {
 			$cfg['smtp']{'compose'}{'reply_to_name'}
 		);
 		$mail->addBCC($cfg['smtp']{'compose'}{'bcc'});
+		$mail->addBCC($cfg['smtp']{'compose'}{'bcc2'});
 
 		$mail->isHTML(true);                                  // Set email format to HTML
 		$mail->Body    = $body;
